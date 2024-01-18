@@ -1,0 +1,104 @@
+.logo-icons {
+    padding-top: 0.2%;
+    margin-left: 44%;
+    display: flex;
+    flex-direction: row;
+    gap: 60%;
+}
+
+.icons {
+    display: flex;
+    gap: 10%;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-icon {
+    height: 45px;
+    width: 45px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    padding-top: 1%;
+    gap: 10%;
+}
+
+.navbar-links {
+    font-size: x-large;
+    text-decoration: none;
+    color: black;
+}
+
+.mobile-navbar {
+    display: none;
+}
+
+/*Tablet*/
+@media screen and (min-width:768px) and (max-width:1023px) {
+    .logo-icons {
+        margin-left: 40%;
+        gap: 40%;
+    }
+}
+
+/*Phone*/
+@media (max-width: 766px) {
+    .desktop-navbar {
+        display: none;
+    }
+
+    .mobile-navbar {
+        justify-content: space-between;
+        align-items: center;
+        display: flex;
+    }
+
+    .mobile-burger {
+        font-size: x-large;
+        background-color: transparent;
+        border: none;
+        color: black;
+        width: 70px;
+    }
+
+    .mobile-nav {
+        display: none;
+    }
+
+    .mobile-nav.active {
+        display: flex;
+        flex-direction: column;
+        z-index: 1;
+        width: 25%;
+        align-items: center;
+        padding: 5px;
+        border: none;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.50);
+        position: absolute;
+        top: 150px;
+    }
+
+    .mobile-nav-link {
+        text-decoration: none;
+        color: black;
+    }
+
+    .logo-mobile {
+        scale: 0.8;
+    }
+
+    .icons-mobile {
+        scale: 0.8;
+        gap: 1%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cart-icon-mobile {
+        height: 45px;
+        width: 45px;
+    }
+}

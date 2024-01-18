@@ -1,0 +1,89 @@
+.footer {
+    display: grid;
+    grid-template-columns: 40% 30% 30%;
+    background-color: #F0F0F0;
+    padding: 0 6%;
+}
+
+.footer-section-1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-text {
+    font-size: x-large;
+    width: 100%;
+}
+
+.heart1 {
+    margin-bottom: 8%;
+}
+
+.heart2 {
+    margin-top: 7%;
+    margin-right: 28%;
+}
+
+.footer-section-2 {
+    margin-top: 24%;
+    margin-left: 20%;
+}
+
+.footer-links {
+    text-decoration: none;
+    color: black;
+    line-height: 2;
+    font-size: x-large;
+}
+
+.footer-social-header {
+    margin-top: 26%;
+}
+
+.footer-social-icons {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.location-icon {
+    width: 35px;
+    height: 35px;
+}
+
+.instagram-icon {
+    justify-content: flex-start;
+}
+
+.footer-social-text1,
+.footer-social-text2,
+.footer-social-text3 {
+    font-size: large;
+    text-decoration: none;
+    color: black;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-social-text1 {
+    margin: 0%;
+    padding-left: 3%;
+}
+
+.footer-social-text2 {
+    padding-left: 4%;
+}
+
+.footer-social-text3 {
+    padding-left: 2%;
+}
+
+.footer-copyright {
+    font-style: italic;
+}
+
+@media screen and (min-width:768px) and (max-width:1023px) {}
+
+/*Phone*/
+@media (max-width: 766px) {}
