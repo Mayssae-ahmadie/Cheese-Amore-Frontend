@@ -1,0 +1,85 @@
+.SignUp-container {
+    font-family: "Playfair Display";
+}
+
+@media (max-width: 1000px) {
+    /* .SignUp-container {
+        background-size: cover;
+        background-position: center;
+    } */
+
+    .SignUp-form {
+        width: 100vw;
+    }
+
+    .SignUp-img {
+        display: none;
+    }
+
+    .text-shadow {
+        text-shadow: 0 0 2px white;
+    }
+
+}
+
+@media (max-width: 500px) {
+    .SignUp-container {
+        background-size: cover;
+        background-position: center;
+
+
+    }
+
+    .SignUp-form {
+        width: 100vw;
+    }
+
+    .SignUp-img {
+
+        display: none;
+    }
+
+    .signup-button {
+        width: 100%;
+    }
+
+    .signup-password {
+        display: block;
+
+    }
+
+    .signup-password>div {
+        margin-right: 0;
+    }
+
+    .signup-line {
+        display: none;
+    }
+
+    .signup-delivery {
+        text-align: center;
+        justify-content: center;
+    }
+
+    .signup-loginlink {
+        margin-bottom: 10px;
+    }
+
+    .signup-title {
+        font-size: x-large;
+        margin-bottom: 0.2rem;
+    }
+
+    .signup-description {
+        font-size: large;
+        margin-bottom: 0.2rem;
+    }
+
+    .signup-input-container {
+        margin-bottom: 0.7rem;
+    }
+
+    .signup-input {
+        padding: 0.5rem;
+    }
+}

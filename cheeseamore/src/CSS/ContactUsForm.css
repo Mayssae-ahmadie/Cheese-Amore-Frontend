@@ -1,0 +1,28 @@
+.contactUs-input {
+    width: 49%;
+}
+
+.contactUsDescription-span {
+    width: 2%;
+    margin: 0;
+}
+
+/*Tablet*/
+@media screen and (min-width:768px) and (max-width:1023px) {
+    .contactUsDescription-cont {
+        margin-left: 5rem;
+        margin-right: 5rem;
+    }
+}
+
+/*Phone*/
+@media (max-width: 766px) {
+    .contactUsDescription-cont {
+        margin: 0 3rem;
+        margin-top: 10rem;
+    }
+
+    .contactUsTitle {
+        font-size: 1.5rem;
+    }
+}

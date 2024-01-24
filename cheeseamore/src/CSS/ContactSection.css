@@ -1,0 +1,133 @@
+.contact-grazing-container {
+    margin-top: 5%;
+    margin-left: 10rem;
+    margin-right: 10rem;
+}
+
+.contact-grazing-title {
+    font-size: xx-large;
+    text-align: center;
+}
+
+.contact-grazing-grid {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    gap: 2%
+}
+
+.contact-grazing-image,
+.contact-grazing-image1 {
+    height: 95%;
+    width: 95%;
+}
+
+.contact-grazing-image {
+    margin-top: 10%;
+}
+
+.contact-social-icons {
+    margin-left: 15%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.contact-location-icon,
+.contact-instagram-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.contact-social-text1,
+.contact-social-text2,
+.contact-social-text3 {
+    font-size: large;
+    text-decoration: none;
+    color: black;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-social-text1 {
+    margin: 0%;
+    padding-left: 3%;
+}
+
+.contact-social-text2 {
+    padding-left: 4%;
+}
+
+.contact-social-text3 {
+    padding-left: 2%;
+}
+
+/*Tablet*/
+@media screen and (min-width:768px) and (max-width:1023px) {
+    .contact-grazing-container {
+        margin-left: 5rem;
+        margin-right: 5rem;
+    }
+
+    .contact-mail-icon,
+    .contact-location-icon,
+    .contact-instagram-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .contact-social-text2 {
+        padding-left: 3%;
+    }
+}
+
+/*Phone*/
+@media (max-width: 766px) {
+    .contact-grazing-container {
+        margin-left: 2rem;
+        margin-right: 2rem;
+    }
+
+    .contact-grazing-title {
+        font-size: medium;
+        margin-top: 20%;
+        margin-bottom: 20%;
+    }
+
+    .contact-grazing-image {
+        margin-top: 20%;
+    }
+
+    .contact-social-icons {
+        margin-left: 0%;
+        display: block;
+        font-size: small;
+        margin-top: 2%;
+    }
+
+    .contact-location-icon,
+    .contact-mail-icon,
+    .contact-instagram-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .contact-social-text1,
+    .contact-social-text2,
+    .contact-social-text3 {
+        font-size: small;
+    }
+
+    .contact-social-text1 {
+        margin: 0%;
+        padding-left: 3%;
+    }
+
+    .contact-social-text2 {
+        padding-left: 4%;
+    }
+
+    .contact-social-text3 {
+        padding-left: 2%;
+    }
+
+}

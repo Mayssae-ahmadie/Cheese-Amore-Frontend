@@ -14,8 +14,13 @@
 }
 
 .cart-icon {
-    height: 45px;
-    width: 45px;
+    height: 40px;
+    width: 40px;
+}
+
+.logout-icon {
+    height: 35px;
+    width: 35px;
 }
 
 .navbar {

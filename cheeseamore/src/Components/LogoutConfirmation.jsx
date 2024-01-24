@@ -6,7 +6,7 @@ function Logout({ closeLogoutModal }) {
     const Logout = () => {
         localStorage.clear();
         closeLogoutModal();
-        navigate('/SignIn');
+        navigate('/LogIn');
     };
 
     return (

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import '../CSS/Header.css';
 import HeaderImage from "../Assets/Header image.png";
 
@@ -9,7 +10,9 @@ const HomepageHeader = () => {
             <div>
                 <p className='header-text'> Epicurean Escapade </p>
                 <p className='header-text'> Cheese & Charcuterie Delights For Every Occasion </p>
-                <button className='header-button'>Order now</button>
+                <Link to="/Shop">
+                    <button className='header-button'> Order now </button>
+                </Link>
             </div>
         </div >
     );

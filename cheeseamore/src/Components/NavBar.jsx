@@ -1,15 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../CSS/NavBar.css";
 import Logo from "../Assets/Logo.png";
 import AccountIcon from "../Assets/Account-icon.png";
 import CartIcon from "../Assets/Cart-icon.png";
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import LogOutIcon from "../Assets/LogOut Icon.png";
+import LogoutConfirm from './LogoutConfirmation';
 
-const NavBar = () => {
-    const token = sessionStorage.getItem('authToken')
-    const handlelogout = () => { sessionStorage.removeItem('authToken'); window.location.reload() };
-    useEffect(() => { }, [handlelogout])
+function NavBar() {
+    // const [isMenuOpen, setMenuOpen] = useState(false);
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const userId = localStorage.getItem('userId');
+        const cartId = localStorage.getItem('cartId');
+        const loggedIn = userId && cartId;
+        setIsLoggedIn(loggedIn);
+    }, []);
+
+    // const toggleMenu = () => {
+    //     setMenuOpen(!isMenuOpen);
+    // };
+
+    const openLogoutModal = () => {
+        setShowLogoutModal(true);
+    };
+
+    const closeLogoutModal = () => {
+        setShowLogoutModal(false);
+        localStorage.clear();
+    };
 
     const [isBurgerActive, setIsBurgerActive] = useState(false);
 
@@ -23,16 +44,20 @@ const NavBar = () => {
                 <div className="logo-icons">
                     <div className="logo">
                         <Link to="/">
-                            <img src={Logo} alt="logo icon"></img>
+                            <img src={Logo} alt="Cheese Amore"></img>
                         </Link>
                     </div>
                     <div className="icons">
-                        <Link to="/login">
-                            <img className="account-icon" src={AccountIcon} alt="account-icon"></img>
-                        </Link>
-                        <Link to='/cart'>
+                        <Link to='/Cart'>
                             <img className="cart-icon" src={CartIcon} alt="cart-icon"></img>
                         </Link>
+                        {isLoggedIn ? (
+                            <img onClick={openLogoutModal} src={LogOutIcon} className="logout-icon" alt="logout" />
+                        ) : (
+                            <Link to="/LogIn">
+                                <img className="account-icon" src={AccountIcon} alt="account-icon"></img>
+                            </Link>
+                        )}
                     </div>
                 </div>
 
@@ -59,6 +84,17 @@ const NavBar = () => {
                     </div>
                 </div>
             </div>
+
+            {showLogoutModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <div className="fixed inset-0 bg-black opacity-50"></div>
+                    <div className="bg-white p-6 relative z-10">
+                        <button onClick={closeLogoutModal} className="absolute top-0 right-0 m-4 px-2 py-1">X</button>
+                        <LogoutConfirm closeLogoutModal={closeLogoutModal} />
+                    </div>
+                </div>
+            )
+            }
 
             <div className="mobile">
                 <div className="mobile-navbar">
@@ -94,13 +130,28 @@ const NavBar = () => {
                         </Link>
                     </div>
                     <div className="icons-mobile">
-                        <Link to="/LogIn">
-                            <img className="account-icon-mobile" src={AccountIcon} alt="account-icon"></img>
-                        </Link>
                         <Link to='/Cart'>
-                            <img className="cart-icon-mobile" src={CartIcon} alt="cart-icon"></img>
+                            <img className="cart-icon" src={CartIcon} alt="cart-icon"></img>
                         </Link>
+                        {isLoggedIn ? (
+                            <img onClick={openLogoutModal} src={LogOutIcon} className="logout-icon" alt="logout" />
+                        ) : (
+                            <Link to="/LogIn">
+                                <img className="account-icon" src={AccountIcon} alt="account-icon"></img>
+                            </Link>
+                        )}
                     </div>
+
+                    {showLogoutModal && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center">
+                            <div className="fixed inset-0 bg-black opacity-50"></div>
+                            <div className="bg-white p-6 relative z-10">
+                                <button onClick={closeLogoutModal} className="absolute top-0 right-0 m-4 px-2 py-1">X</button>
+                                <LogoutConfirm closeLogoutModal={closeLogoutModal} />
+                            </div>
+                        </div>
+                    )
+                    }
                 </div>
             </div>
         </div>

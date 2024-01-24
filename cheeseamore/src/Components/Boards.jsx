@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import '../CSS/Boards.css';
 import Love from "../Assets/The Love Board.png";
 import Chic from "../Assets/The Chic Board.png";
@@ -17,7 +18,9 @@ const HomepageBoards = () => {
                     <div><img className="boards-image" src={Chic} alt="" srcSet="" /> </div>
                     <div><img className="boards-image" src={Gourmet} alt="" srcSet="" /> </div>
                 </div >
-                <button className='boards-button'> View more </button>
+                <Link to="/Shop">
+                    <button className='boards-button'> View more </button>
+                </Link>
             </div >
         </div >
     );

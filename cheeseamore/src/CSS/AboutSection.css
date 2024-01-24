@@ -1,0 +1,65 @@
+.about-section {
+    margin: 5% 10%;
+}
+
+.about-section-header {
+    text-align: center;
+    font-size: x-large;
+    margin: 5% 0;
+}
+
+.about-section-description {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 5%;
+}
+
+.about-image {
+    height: 35%;
+    width: 35%;
+}
+
+.about-section-text {
+    width: 90%;
+    font-size: x-large;
+    margin: 0 10%;
+    padding-top: 10%;
+}
+
+/*Tablet*/
+@media screen and (min-width:768px) and (max-width:1023px) {
+    .about-image {
+        height: 40%;
+        width: 40%;
+    }
+
+    .about-section-text {
+        font-size: medium;
+    }
+}
+
+/*Phone*/
+@media (max-width: 766px) {
+    .about-section-header {
+        font-size: large;
+        margin: 0 5%;
+        
+    }
+
+    .about-section-description {
+        display: flex;
+        flex-direction: column;
+        text-align: justify;
+    }
+
+    .about-image {
+        height: 80%;
+        width: 80%;
+        margin: 5% auto;
+    }
+
+    .about-section-text {
+        font-size: medium;
+        margin: 0 5%;
+    }
+}

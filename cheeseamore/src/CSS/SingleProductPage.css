@@ -1,0 +1,28 @@
+.single-product-container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    margin: 5% 10%;
+}
+
+.single-product-image {
+    height: 70%;
+    width: 70%;
+}
+
+.single-product-descriptive {
+    margin-top: 5%;
+    width: 75%;
+    font-size: large;
+}
+
+.single-product-title {
+    font-size: large;
+    font-weight: bold;
+    padding-bottom: 5%;
+}
+
+.single-product-details {
+    font-size: large;
+    padding-bottom: 5%;
+}
+

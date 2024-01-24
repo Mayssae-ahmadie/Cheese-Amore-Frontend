@@ -2,17 +2,17 @@
     margin-top: 5%;
     display: grid;
     grid-template-columns: 40% 20% 20% 20%;
-    margin-top: 10%;
+    margin-top: 5%;
 }
 
 .quality-logo {
     margin-left: 30%;
-    margin-top: 8%;
 }
 
 .quality-grid {
+    margin-top: 10%;
     display: flex;
-    gap: 40%;
+    gap: 60%;
 }
 
 .quality-grid-section {
@@ -20,15 +20,15 @@
 }
 
 .quality-grid-image {
-    margin-left: 15%;
-    height: 100px;
-    width: 100px;
+    margin-left: 45%;
+    height: 50px;
+    width: 50px;
 }
 
 .quality-banner-text {
-    font-size: x-large;
+    font-size: large;
     margin-left: 30%;
-    width: 50%;
+    width: 100%;
     text-align: center;
 }
 
@@ -36,20 +36,6 @@
     .quality-banner {
         display: grid;
         grid-template-columns: 35% 15% 15% 15%;
-    }
-
-    .quality-logo {
-        margin-left: 30%;
-        margin-top: 4%;
-    }
-
-    .quality-grid-image {
-        height: 100px;
-        width: 100px;
-    }
-
-    .quality-banner-text {
-        font-size: large;
     }
 }
 
@@ -62,7 +48,8 @@
     }
 
     .quality-grid {
-        gap: 5%;
+        margin-top: 35%;
+        gap: 25%;
     }
 
     .quality-banner-text {
