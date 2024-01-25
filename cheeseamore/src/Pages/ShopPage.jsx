@@ -1,16 +1,36 @@
-import { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import DeliveryBanner from "../Components/DeliveryBanner";
 import NavBar from "../Components/NavBar";
 import QualityBanner from "../Components/QualityBanner";
 import Footer from "../Components/Footer";
-import "../CSS/ShopPage.css";
 import Cart from "../Assets/Cart icon.png";
+import ConfirmAddToCart from "../Components/SingleProduct Components/ConfirmAddToCart";
+import AddedToCartSuccess from "../Components/SingleProduct Components/AddedToCartSuccess";
+import AlreadyInCart from "../Components/SingleProduct Components/AlreadyInCart";
+import { Link } from "react-router-dom";
+import "../CSS/ShopPage.css";
 
 const ShopPage = () => {
     const [products, setProducts] = useState([]);
     const [category, setCategory] = useState('All');
     const [sortOrder, setSortOrder] = useState('asc'); // 'asc' for ascending, 'desc' for descending
+
+    const [product, setProduct] = useState(null);
+    const [quantity, setQuantity] = useState("");
+    const [instruction, setInstruction] = useState("");
+    const navigate = useNavigate();
+    const { productId } = useParams();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [showSuccessCartModal, setShowSuccessCartModal] = useState(false);
+    const [showFailCartModal, setShowFailCartModal] = useState(false);
+    const modalRef = useRef(null);
+    const [ModalMessage, setModalMessage] = useState('');
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+    const cartId = localStorage.getItem('cartId');
+    const role = localStorage.getItem('role');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -53,12 +73,90 @@ const ShopPage = () => {
         setSortOrder((prevSortOrder) => (prevSortOrder === 'asc' ? 'desc' : 'asc'));
     };
 
+    const addToCart = async () => {
+        if (!userId || role !== 'client') {
+            navigate('/LogIn');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${process.env.REACT_APP_URL}/cart/addProduct/${cartId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    productID: product._id,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setShowSuccessCartModal(true);
+            } else {
+                setShowFailCartModal(true);
+                setModalMessage(data.message);
+                console.error("API Error:", data.message);
+            }
+
+        } catch (error) {
+            setShowFailCartModal(true);
+            console.error("API Error:", error.message);
+        }
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                closeModal();
+            }
+        };
+
+        if (isModalOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isModalOpen]);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+
+    useEffect(() => {
+        const fetchProductData = async () => {
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_URL}/product/getById/${productId}`);
+
+                setProduct(response.data.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        // Check if productId is available before making the request
+        if (productId) {
+            fetchProductData();
+        }
+    }, [productId]);
+
     return (
         <div>
+            <DeliveryBanner />
             <NavBar />
+
             <div className="shop-all-product">
                 <div className="shop-category-price">
-                    <div className="shop-browse-category" > Browse By Category </div>
+                    <div className="shop-browse-category"> Browse By Category </div>
                     <button className="shop-button-sort" onClick={handleSortToggle}>
                         {`Sort Price: ${sortOrder === 'asc' ? 'Low to High' : 'High to Low'}`}
                     </button>
@@ -92,20 +190,62 @@ const ShopPage = () => {
                                 </Link>
 
                                 <div className="shop-add-to-cart">
-                                    <button className="shop-cart-text">
-                                        Add to Cart
-                                        <img className="shop-cart-icon" src={Cart} alt="cart-icon" />
+                                    <button
+                                        onClick={() => {
+                                            setProduct(product); // Set the selected product
+                                            openModal();
+                                        }}
+                                        className="shop-cart-text"
+                                    >
+                                        ADD TO CART{" "}
+                                        <span>
+                                            <img src={Cart} className="shop-cart-icon" alt="cart" />
+                                        </span>
                                     </button>
                                 </div>
                             </div>
                         ))}
                 </div>
+
+                {isModalOpen && (
+                    <div className="fixed inset-0 max-w-screen flex items-center justify-center z-40">
+                        <div className="fixed inset-0 bg-black opacity-50"></div>
+                        <div
+                            ref={modalRef}
+                            className="absolute bg-white p-8 rounded shadow-md"
+                        >
+                            <ConfirmAddToCart
+                                onConfirm={addToCart}
+                                closeModal={closeModal}
+                            />
+                        </div>
+                    </div>
+                )}
+
+                {showSuccessCartModal && (
+                    <div className="fixed inset-0 max-w-screen flex items-center justify-center z-40">
+                        <div className="fixed inset-0 bg-black opacity-50"></div>
+                        <div className="absolute bg-white p-8 rounded shadow-md">
+                            <AddedToCartSuccess closeModal={() => setShowSuccessCartModal(false)} />
+                        </div>
+                    </div>
+                )}
+
+                {showFailCartModal && (
+                    <div className="fixed inset-0 max-w-screen flex items-center justify-center z-40">
+                        <div className="fixed inset-0 bg-black opacity-50"></div>
+                        <div className="absolute bg-white p-8 rounded shadow-md">
+                            <AlreadyInCart closeModal={() => setShowFailCartModal(false)}
+                                Message={ModalMessage} />
+                        </div>
+                    </div>
+                )}
             </div>
 
             <QualityBanner />
             <Footer />
-        </div >
+        </div>
     );
-};
+}
 
 export default ShopPage;

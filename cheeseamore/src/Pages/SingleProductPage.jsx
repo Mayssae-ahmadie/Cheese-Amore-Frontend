@@ -121,34 +121,38 @@ const SingleProductPage = () => {
                             />
                             <p className="single-product-descriptive"> All images provided are illustrative examples and are subject to variations. </p>
                         </div>
-                        <div>
+                        <div className="single-production-data">
                             <p className="single-product-title"> {product.name}</p>
                             <p className="single-product-details"> ${product.price}</p>
                             <p className="single-product-details"> {product.serving}</p>
                             <p className="single-product-details"> {product.description}</p>
-                            <p> Special Instructions Or Customizations </p>
+                            <div className="single-product-instruction">
+                                <p className="single-product-customization"> Special Instructions Or Customizations </p>
+                                <p className="single-product-optional"> Optional </p>
+                            </div>
                             <textarea
                                 id="message"
                                 name="message"
-                                required
-                                className=""
+                                className="single-product-add-instruction"
                                 placeholder="Add Instruction"
-                                onChange={setInstruction}
+                                value={instruction}
+                                onChange={(e) => setInstruction(e.target.value)}
                             ></textarea>
                         </div>
+
+
+                        <button
+                            onClick={() => {
+                                openModal();
+                            }}
+                            className="cart-button-single-product">
+
+                            ADD TO CART{" "}
+                            <span>
+                                <img src={Cart} className="cart-single-product" alt="cart" />
+                            </span>
+                        </button>
                     </div>
-
-                    <button
-                        onClick={() => {
-                            openModal();
-                        }}
-                        className="bg-white text-red-700 font-bold psy-1 px-2 border border-red-700 w-96 text-lg inline-block mt-5 flex justify-center hover:bg-red-100 SingleProductData-Cart-responsive">
-
-                        ADD TO CART{" "}
-                        <span>
-                            <img src={Cart} className="w-5 h-5 ml-1 mt-1" alt="cart" />
-                        </span>
-                    </button>
 
                     {isModalOpen && (
                         <div className="fixed inset-0 max-w-screen flex items-center justify-center z-40">

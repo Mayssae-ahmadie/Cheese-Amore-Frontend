@@ -119,8 +119,8 @@
     }
 
     .shop-product-items {
-        margin: 5% 10%;
-        row-gap: 3%;
+        margin: 5% 10% 30% 10%;
+        row-gap: 2%;
     }
 
     .shop-item-name-price {
@@ -173,18 +173,20 @@
     }
 
     .shop-product-items {
-        margin: 5% 15% 150% 15%;
-        row-gap: 8%;
+        margin: 5% 15% 100% 15%;
+        row-gap: 6%;
     }
 
     .shop-item-name-price {
         width: 100%;
-        font-size: medium;
+        font-size: small;
         display: block;
     }
 
     .shop-add-to-cart {
-        margin-left: 10%;
+        width: 100%;
+        margin-left: 0%;
+        padding: 2%;
     }
 
     .shop-cart-text {
@@ -200,6 +202,7 @@
     .shop-cart-icon {
         height: 15px;
         width: 15px;
+        margin-left: 5%;
         padding-right: 1%;
     }
 }
