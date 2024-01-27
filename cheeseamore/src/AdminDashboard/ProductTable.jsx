@@ -64,17 +64,22 @@ const ProductTable = () => {
 
     const handleAddProduct = async () => {
         const formData = new FormData();
-        formData.append("Name", name);
-        formData.append("Image", image);
-        formData.append("Description", description);
+        formData.append("name", name);
+        formData.append("image", image);
+        formData.append("description", description);
         formData.append("price", price);
         formData.append("category", category);
         formData.append("serving", serving);
-
+        console.log(name, description, category, serving, price);
         try {
             await axios.post(
-                `https://cheese-amore.onrender.com/product/add`,
-                formData,
+                `http://localhost:5000/product/add`,
+                name,
+                image,
+                description,
+                price,
+                category,
+                serving,
                 {
                     headers,
                 }

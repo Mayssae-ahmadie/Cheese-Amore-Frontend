@@ -4,6 +4,7 @@ import HomePage from './Pages/HomePage';
 import AboutPage from './Pages/AboutPage';
 import ContactPage from './Pages/ContactPage';
 import ShopPage from './Pages/ShopPage';
+import Cart from './Pages/Cart';
 import SignUp from './Pages/SignUp';
 import LogIn from "./Pages/LogIn";
 import SingleProductPage from "./Pages/SingleProductPage";
@@ -11,7 +12,6 @@ import AdminDashboard from "./AdminDashboard/AdminSideBar";
 
 function App() {
   return (
-    
     <div className="App">
       <ToastProvider>
         <Router>
@@ -23,7 +23,7 @@ function App() {
             <Route path="/Contact" element={<ContactPage />} />
             <Route path="/Shop" element={<ShopPage />} />
             <Route path="/SingleProductPage/:productId" element={<SingleProductPage />} />
-            {/* <Route path="/Cart" element={<Cart />} /> */}
+            <Route path="/Cart" element={<Cart />} />
             <Route path="/AdminDashboard" element={<AdminDashboard />}></Route>
           </Routes >
         </Router>

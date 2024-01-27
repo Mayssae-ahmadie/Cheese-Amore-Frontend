@@ -9,7 +9,7 @@ function ConfirmationEmail({ closeModal }) {
         <div className="flex justify-end bg-gray-100 p-6 items-center">
           <button
             onClick={closeModal}
-            className="bg-[#E6C068] text-black font-bold py-1 px-2 border border-red-700 w-32 text-lg inline-block " >
+            className="bg-[#E6C068] text-black font-bold py-1 px-2 w-32 text-lg inline-block " >
             CANCEL
           </button>
         </div>
