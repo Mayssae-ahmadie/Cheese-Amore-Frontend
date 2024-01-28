@@ -1,7 +1,7 @@
 import axios from "axios";
-// import "../CSS/Dashboard.css";
+import "../CSS/AdminDashboard.css";
 import { useEffect, useState } from "react";
-import { useToasts } from 'react-toast-notifications'
+import { useToasts } from 'react-toast-notifications';
 
 const ProductTable = () => {
     const [products, setProducts] = useState([]);
@@ -15,7 +15,8 @@ const ProductTable = () => {
     const [error, setError] = useState(null);
     const role = localStorage.getItem('role');
     const token = localStorage.getItem('token');
-    const headers = { authorization: `Bearer ${token}` };
+    // const headers = { authorization: `Bearer ${token}` };
+    const headers = { 'Content-Type': 'multipart/form-data' };
     const { addToast } = useToasts();
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
@@ -37,7 +38,7 @@ const ProductTable = () => {
     };
 
     const handleImageChange = (e) => {
-        setImage(e.target.file);
+        setImage(e.target.files[0]);
     };
 
     const handleDelete = async (productID) => {
@@ -108,23 +109,23 @@ const ProductTable = () => {
         setPrice(product.price);
         setServing(product.serving);
         setCategory(product.category);
-
+        setShowUpdateModal(true);
     };
-    console.log('selectedProduct', selectedProduct)
+
     const handleUpdateProduct = async (e, selectedProduct) => {
         e.preventDefault();
-
 
         const formData = new FormData();
         formData.append("name", name);
         formData.append("description", description);
-        formData.append("image", image);
+        if (image) formData.append("image", image);
         formData.append("price", price);
         formData.append("category", category);
         formData.append("serving", serving);
+        console.log(...formData);
         try {
             await axios.put(
-                `https://cheese-amore.onrender.com/product/update/${selectedProduct._id}`,
+                `http://localhost:5000/product/update/${selectedProduct}`,
                 {
                     formData
                 },
@@ -183,7 +184,7 @@ const ProductTable = () => {
                         <th onClick={() => toggleSort("name")}>Name</th>
                         <th onClick={() => toggleSort("image")}>Image</th>
                         <th onClick={() => toggleSort("description")}>Description</th>
-                        <th onClick={() => toggleSort("price")}>Serving</th>
+                        <th onClick={() => toggleSort("serving")}>Serving</th>
                         <th onClick={() => toggleSort("price")}>Price</th>
                         <th onClick={() => toggleSort("category")}>Category</th>
                         <th>Actions</th>

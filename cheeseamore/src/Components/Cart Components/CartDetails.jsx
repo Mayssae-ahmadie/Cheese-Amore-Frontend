@@ -11,7 +11,7 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
 
     const getCartItems = () => {
         const userId = localStorage.getItem("userId");
-        axios.get(`http://localhost:5000/cart/getByUserID/${userId}`)
+        axios.get(`${process.env.REACT_APP_URL}/cart/getByUserID/${userId}`)
             .then(response => {
                 setCartData(response.data.data);
             })
@@ -22,9 +22,10 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
     }
 
     getCartItems();
-    const userAddress = cartData.user?.fullAddress;
-    console.log(cartData);
-    const userCity = cartData.user?.city;
+
+    // const userAddress = cartData.user?.fullAddress;
+    // console.log(cartData);
+    // const userCity = cartData.user?.city;
 
     useEffect(() => {
         // Convert subtotal to integer using parseInt
@@ -65,10 +66,10 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
                                     onChange={handleShippingMethodChange}
                                 />
                                 Delivery (preorder 3-4 days) - 10 $
-                                <p className="text-lg ml-8 italic">
+                                {/* <p className="text-lg ml-8 italic">
                                     {userCity}, {userAddress.street},  {userAddress.building}, Floor: {userAddress.floor}
                                     <a onClick={openAddressModal} className="underline ml-4 not-italic">Edit address</a>
-                                </p>
+                                </p> */}
                             </label>
                         </div>
                         <div className="mb-4">
@@ -103,7 +104,7 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
             <div className="flex justify-end">
                 <button
                     onClick={() => openModal(shippingMethod)}
-                    className="bg-[#E6C068] text-black font-bold py-3 px-2 border border-red-700 w-96 text-lg inline-block mt-5 flex justify-center hover:bg-red-100 checkout-button"
+                    className="bg-[#E6C068] text-black font-bold py-3 px-2 w-96 text-lg inline-block mt-5 flex justify-center checkout-button"
                 >
                     <p className="cartDetails-checkout">
                         CHECKOUT<span className="ml-12">{total} $ </span>{" "}

@@ -8,7 +8,7 @@ import Cart from './Pages/Cart';
 import SignUp from './Pages/SignUp';
 import LogIn from "./Pages/LogIn";
 import SingleProductPage from "./Pages/SingleProductPage";
-import AdminDashboard from "./AdminDashboard/AdminSideBar";
+import AdminDashboard from "./Pages/AdminDashboardPage";
 
 function App() {
   return (

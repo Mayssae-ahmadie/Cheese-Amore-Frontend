@@ -1,26 +1,41 @@
 import axios from "axios";
-// import "../CSS/Dashboard.css";
+import "../CSS/AdminDashboard.css";
 import { useEffect, useState } from "react";
 import { useToasts } from 'react-toast-notifications'
 
 const UserTable = () => {
     const [users, setUsers] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [fullName, setFullName] = useState([]);
-    const [email, setEmail] = useState([]);
     const [error, setError] = useState(null);
+    const userId = localStorage.getItem('userId');
     const role = localStorage.getItem('role');
     const token = localStorage.getItem('token');
     const headers = { authorization: `Bearer ${token}` };
-    const { addToast } = useToasts()
+    const { addToast } = useToasts();
+
+    const [userInfo, setUserInfo] = useState({
+        phoneNumber: '',
+        fullAddress: { floor: '', building: '', street: '', description: '' },
+        city: ''
+    });
 
     useEffect(() => {
-        fetchUsers();
-    }, []);
+        const getUserInfoByID = async (userId) => {
+            console.log('User ID to be checked:', userId);
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_URL}/user/getById/${userId}`);
+                setUserInfo(response.data.data);
+            } catch (error) {
+                console.error('Error retrieving User data: ', error);
+            }
+        };
+
+        getUserInfoByID(userId);
+    }, [userId]);
 
     const fetchUsers = () => {
         axios
-            .get("https://cheese-amore.onrender.com/user/getAll")
+            .get(`${process.env.REACT_APP_URL}/user/getAll`)
             .then((response) => {
                 console.log(response);
                 setUsers(response.data.data);
@@ -30,11 +45,15 @@ const UserTable = () => {
             });
     };
 
-    const handleSwitchToAdmin = async (Id) => {
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    const handleSwitchToAdmin = async (switchId) => {
         console.log(headers);
         try {
             await axios.put(
-                `https://cheese-amore.onrender.com/user/switchToAdmin/${Id}`,
+                `${process.env.REACT_APP_URL}/user/switchToAdmin/${switchId}`,
                 {
                     headers,
                 }
@@ -56,7 +75,7 @@ const UserTable = () => {
     const handleDelete = async (ID) => {
         try {
             await axios.delete(
-                `https://cheese-amore.onrender.com/user/delete/${ID}`,
+                `${process.env.REACT_APP_URL}/user/delete/${ID}`,
                 {
                     headers,
                 }
@@ -76,14 +95,15 @@ const UserTable = () => {
     };
 
     return (
-        <div className="">
-            <h1 className=""> User Table </h1>
+        <div className="card-main">
+            <h1 className="dashboard-title"> Users Table </h1>
             {error && <p className="error-message">{error.message}</p>}
             <table className="table">
                 <thead>
                     <tr>
                         <th>Full Name</th>
                         <th>Email</th>
+                        <th>User Info</th>
                         <th>Role</th>
                         <th>Actions</th>
                     </tr>
@@ -93,6 +113,13 @@ const UserTable = () => {
                         <tr key={user._id}>
                             <td>{user.fullName.firstName} {user.fullName.lastName}</td>
                             <td>{user.email}</td>
+                            <td>Phone Number: {user.phoneNumber} <br />
+                                City : {user.city},
+                                Street : {user.fullAddress.street},
+                                Building: {user.fullAddress.building},
+                                Floor: {user.fullAddress.floor},
+                                Description: {user.fullAddress.description}
+                            </td>
                             <td>{user.role}</td>
                             <td>
                                 <button
@@ -117,38 +144,6 @@ const UserTable = () => {
                     ))}
                 </tbody>
             </table>
-
-            {showModal && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <span
-                            className="close"
-                            onClick={() => {
-                                setShowModal(false);
-                            }}
-                        >
-                            &times;
-                        </span>
-                        <h2>Update User</h2>
-                        <div className="form-input">
-                            <input
-                                type="text"
-                                value={fullName}
-                                onChange={(e) => setFullName(e.target.value)}
-                                placeholder="Full Name"
-                            />
-                        </div>
-                        <div className="form-input">
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="Email"
-                            />
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

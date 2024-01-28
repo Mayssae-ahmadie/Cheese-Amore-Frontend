@@ -21,7 +21,7 @@ function CartTable({ cartData, OnDelete }) {
         console.log(cartId);
         try {
             const response = await axios.delete(
-                `http://localhost:5000/cart/removeProduct/${cartId}/${selectedProduct}`,
+                `${process.env.REACT_APP_URL}/cart/removeProduct/${cartId}/${selectedProduct}`,
             );
 
             setShowConfirmationModal(false);
@@ -99,8 +99,6 @@ function CartTable({ cartData, OnDelete }) {
                 <tbody>
                     {products.map((product) => {
                         if (product && product.price) {
-
-
                             return (
                                 <tr key={product._id}>
                                     <td className="p-4 text-center">

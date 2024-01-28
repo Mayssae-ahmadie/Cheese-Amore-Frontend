@@ -1,9 +1,10 @@
-import UserTable from "../AdminDashboard/UserTable";
-import OrderTable from "../AdminDashboard/OrderTable";
-import ProductTable from "../AdminDashboard/ProductTable";
+import UserTable from "./UserTable";
+import OrderTable from "./OrderTable";
+import ProductTable from "./ProductTable";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import NavBar from "../Components/NavBar";
+import "../CSS/AdminDashboard.css";
 
 const AdminSideBar = () => {
     const [section, setSection] = useState('')
@@ -24,9 +25,9 @@ const AdminSideBar = () => {
                         <li>
                             <Link to="" onClick={() => setSection('Orders')} className="">Orders</Link>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link to="/LogIn" className="">Logout</Link>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
             </div>
