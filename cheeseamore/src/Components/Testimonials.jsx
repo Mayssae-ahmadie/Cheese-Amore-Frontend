@@ -10,6 +10,7 @@ function Testimonials() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [fullName, setFullName] = useState('');
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [approvedTestimonialIds, setApprovedTestimonialIds] = useState([]);
 
     useEffect(() => {
         fetchApprovedTestimonials();
@@ -20,27 +21,34 @@ function Testimonials() {
         fetch('http://localhost:5000/testimonial/getAll')
             .then((response) => response.json())
             .then((data) => {
+                // Filter the data to get approved testimonials
                 const approvedTestimonials = data.data.filter(testimonial => testimonial.approve === true);
+                // Extract IDs of approved testimonials
+                const approvedTestimonialIds = approvedTestimonials.map(testimonial => testimonial._id);
+                // Set the state with approved testimonial data and IDs
                 setTestimonialData(approvedTestimonials);
-                console.log(data.data)
+                setApprovedTestimonialIds(approvedTestimonialIds); // Assuming you have state for storing IDs
+                console.log(approvedTestimonialIds); // Optional: Log the IDs for verification
             })
             .catch((error) => console.log(error));
     };
 
-    const fetchUserFullName = async (testimonialId) => {
+    const fetchUserFullName = async (approvedTestimonialIds) => {
         try {
-            const response = await fetch(`http://localhost:5000/testimonial/getByID/${testimonialId}`);
+            const response = await fetch(`http://localhost:5000/testimonial/getByID/${approvedTestimonialIds}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const data = await response.json();
-            setFullName(data.userFullName.firstName);
-            console.log(data.userFullName.firstname);
+            console.log(data);
+            setFullName(data.userFullName.firstName, data.userFullName.lastName);
+            console.log(data.userFullName.firstName, data.userFullName.lastName);
         } catch (error) {
             console.error('Error fetching user full name:', error);
         }
     };
     console.log(testimonialData);
+
 
     const handleReview = async (reviewContent) => {
         try {
