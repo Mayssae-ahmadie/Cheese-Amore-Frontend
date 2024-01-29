@@ -1,4 +1,4 @@
-/* * {
+* {
     margin: 0;
     padding: 0;
 }
@@ -60,7 +60,7 @@
     color: rgb(155, 149, 149)
 }
 
-.testimonial1-button {
+button {
     border: none;
     outline: none;
     cursor: pointer;
@@ -105,6 +105,14 @@
 .leave-review {
     text-align: center;
     font-size: xx-large;
+}
+
+.transition-footer {
+    text-align: center;
+    color: #6D78DD;
+    margin-top: 20px;
+    font-size: larger;
+    font-weight: bold;
 }
 
 .popup {
@@ -207,6 +215,8 @@
         margin-right: 20px;
     }
 
+
+
     .testimonial-image {
         height: 80px;
         width: 80px;
@@ -239,7 +249,7 @@
 @media screen and (max-width: 480px) {
     .testimonial-container {
         scale: 1;
-        width: 350px;
+        width: 350px
     }
 
     .testimonial-slide {
@@ -282,58 +292,6 @@
         left: 10%;
         margin-bottom: 5%;
         height: 95%;
+
     }
-} */
-
-/* styles.css */
-.testimonial-carousel {
-    display: flex;
-    overflow-x: auto;
-}
-
-.testimonial-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px;
-}
-
-.add-testimonial-button {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px;
-    margin: 10px;
-    cursor: pointer;
-}
-
-.modal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
 }

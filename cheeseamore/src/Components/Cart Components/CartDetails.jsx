@@ -42,6 +42,7 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
     useEffect(() => {
         // Convert subtotal to integer using parseInt
         const subtotalInt = parseInt(subtotal);
+        console.log(subtotal);
 
         // Check if subtotalInt is a valid number
         if (!isNaN(subtotalInt)) {
@@ -50,6 +51,8 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
 
             // Set total with newTotal
             setTotal(newTotal);
+            console.log(subtotal, newTotal);
+            localStorage.setItem("Totals", newTotal);
         } else {
             console.error("Subtotal is not a valid number.");
         }
@@ -68,13 +71,11 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
         }
 
         try {
-            if (!isWithinTimeRange(selectedDateTime)) {
-                console.error('Delivery and Pickup are only available from 10 am to 10 pm');
-                return;
-            }
+            // if (!isWithinTimeRange(selectedDateTime)) {
+            //     console.error('Delivery and Pickup are only available from 10 am to 10 pm');
+            //     return;
+            // }
 
-            const transformedDateString = formatDateTime(selectedDateTime);
-            console.log(transformedDateString, userId);
             console.log('Delivery or pickup slot was scheduled successfully');
             setReceiveDateTime(selectedDateTime);
         } catch (error) {
@@ -87,7 +88,7 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
 
     const isWithinTimeRange = (date) => {
         const startHour = 10;
-        const endHour = 22;
+        const endHour = 20;
 
         return (
             isAfter(date, setHours(date, startHour)) &&
@@ -95,8 +96,26 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
         );
     };
 
-    const formatDateTime = (date) => {
-        return format(date, 'yyyy-MM-dd HH:mm');
+    const formatDateTime = (receiveDateTime) => {
+        // Parse the string into a Date object
+        const dateTime = new Date(receiveDateTime);
+
+        // Extract components
+        const month = dateTime.toLocaleString('en-US', { month: 'long' });
+        const day = dateTime.getDate();
+        const year = dateTime.getFullYear();
+
+        // Convert to 12-hour format
+        let hour = dateTime.getHours();
+        const am_pm = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12;
+        hour = hour ? hour : 12; // Handle midnight (0:00) as 12 AM
+
+        // Format the output
+        const formattedDateTime = `${month} ${day}, ${year} and ${hour}:00${am_pm}`;
+
+        console.log(formattedDateTime); // Output: January 1, 2022 and 12:00PM
+        console.log(receiveDateTime);
     };
 
     return (
@@ -140,14 +159,29 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
                             <p className="text-3xl italic mb-9 mt-12 CartDetails-Title">Schedule date and time </p>
                             <DatePicker
                                 selected={receiveDateTime}
-                                onChange={(date) => handleDateTime(date)}
+                                onChange={(date) => {
+                                    const dateTime = new Date(date); // Parse the selected date
+                                    const formattedDateTime = dateTime.toLocaleString('en-US', {
+                                        month: 'long',
+                                        day: 'numeric',
+                                        year: 'numeric',
+                                        hour: 'numeric',
+                                        minute: '2-digit',
+                                        hour12: true
+                                    });
+
+                                    console.log(formattedDateTime); // Output the formatted date and time
+                                    localStorage.setItem("date", formattedDateTime)
+                                }}
                                 dateFormat="MM/dd/yyyy h:mm aa"
                                 minDate={minDate}
                                 maxDate={maxDate}
                                 showTimeSelect
                                 timeIntervals={60}
                                 timeFormat="HH:mm aa"
+                                value={setReceiveDateTime}
                             />
+
                         </div>
                     </div>
                     <div className="flex gap-60 CartDetails-receipt">

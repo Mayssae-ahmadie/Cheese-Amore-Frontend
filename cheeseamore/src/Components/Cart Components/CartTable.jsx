@@ -11,6 +11,7 @@ function CartTable({ cartData, OnDelete }) {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [products, setProducts] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [instruction, setInstruction] = useState("");
 
     const openConfirmationModal = () => {
         setShowConfirmationModal(true);

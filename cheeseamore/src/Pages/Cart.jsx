@@ -22,7 +22,6 @@ function Cart() {
     const cartId = localStorage.getItem('cartId');
     const modalRef = useRef(null);
     const [cartData, setCartData] = useState(null);
-    const [totalPrice, setTotalPrice] = useState(0);
 
     const openAddressModal = () => {
         setAddressModalOpen(true);
@@ -34,25 +33,29 @@ function Cart() {
     };
 
     const handleConfirm = async () => {
+        const formattedDateTime = localStorage.getItem("date");
+        const totalPrice = localStorage.getItem("Totals");
+        console.log(shippingMethod, formattedDateTime, totalPrice, cartId);
         try {
             const response = await axios.post(`${process.env.REACT_APP_URL}/order/create/${cartId}`, {
-                shippingMethod: shippingMethod,
-                receiveDateTime: receiveDateTime,
-                totalPrice: totalPrice
+                "shippingMethod": shippingMethod,
+                "receiveDateTime": formattedDateTime,
+                "totalPrice": totalPrice
             },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                // {
+                //     headers: {
+                //         Authorization: `Bearer ${token}`,
+                //     },
+                // }
+            );
 
-            console.log(response.data);
-            closeModal();
-            setShowThankyou(true);
-            updateCartData(response.data.updatedCart);
+            // console.log(response.data.data);
+            // closeModal();
+            // setShowThankyou(true);
+            // updateCartData(response.data.data.updatedCart);
 
         } catch (error) {
-            console.error("Error creating order:", error.message);
+            console.error("Error creating order:", error.toString());
         }
     };
 

@@ -1,278 +1,149 @@
-// import { useEffect, useState } from 'react';
-// import axios from 'axios';
-// import "../CSS/Testimonial.css";
-// import PopUp from "./PopUp";
+import { useEffect, useState } from 'react';
+import "../CSS/Testimonial.css";
+import Popup from '../Components/PopUp';
 
-// function Testimonials() {
-//     const [testimonialsData, setTestimonialsData] = useState([]);
-//     const [buttonPopup, setButtonPopup] = useState(false);
-//     const [Review, setReview] = useState('');
-//     const [errorMessage, setErrorMessage] = useState('');
+function Testimonials() {
+    const [testimonialData, setTestimonialData] = useState([]);
+    const [buttonPopup, setButtonPopup] = useState(false);
+    const [Review, setReview] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [fullName, setFullName] = useState('');
+    const [currentIndex, setCurrentIndex] = useState(0);
 
-//     const userId = localStorage.getItem('userId');
-//     const isLoggedIn = !!userId;
+    useEffect(() => {
+        fetchApprovedTestimonials();
+        fetchUserFullName();
+    }, []);
 
-//     const [userFullName, setUserFullName] = useState('');
-//     const fetchUserDetailsAndFullName = async () => {
-//         try {
-//             const response = await axios.get(`${process.env.REACT_APP_URL}/user/getById/${userId}`);
-//             const userData = response.data;
-//             console.log(userData);
-//             if (response.status === 200 && userData.success) {
-//                 const { firstName, lastName } = userData.data;
-//                 setUserFullName(`${firstName} ${lastName}`);
-//             } else {
-//                 console.error('Error fetching user details:', userData.message);
-//                 setUserFullName('');
-//             }
-//         } catch (error) {
-//             console.error('An error occurred while fetching user details:', error);
-//             setUserFullName('Unknown Usr');
-//         }
-//     };
+    const fetchApprovedTestimonials = () => {
+        fetch('http://localhost:5000/testimonial/getAll')
+            .then((response) => response.json())
+            .then((data) => {
+                const approvedTestimonials = data.data.filter(testimonial => testimonial.approve === true);
+                setTestimonialData(approvedTestimonials);
+                console.log(data.data)
+            })
+            .catch((error) => console.log(error));
+    };
 
-//     const fetchTestimonials = async () => {
-//         try {
-//             const response = await axios.get(`${process.env.REACT_APP_URL}/testimonial/getAll`);
-//             const data = response.data;
+    const fetchUserFullName = async (testimonialId) => {
+        try {
+            const response = await fetch(`http://localhost:5000/testimonial/getByID/${testimonialId}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            setFullName(data.userFullName.firstName);
+            console.log(data.userFullName.firstname);
+        } catch (error) {
+            console.error('Error fetching user full name:', error);
+        }
+    };
+    console.log(testimonialData);
 
-//             if (response.status === 200) {
-//                 const approvedTestimonials = data.data.filter(testimonial => testimonial.approve === true);
-//                 setTestimonialsData(approvedTestimonials);
-//             } else {
-//                 console.error('Error fetching testimonials:', data.message);
-//             }
-//         } catch (error) {
-//             console.error('An error occurred while fetching testimonials:', error);
-//         }
-//     };
+    const handleReview = async (reviewContent) => {
+        try {
+            // Check if the review content is empty
+            if (!reviewContent.trim()) {
+                return { success: false, message: 'Please enter your review.' };
+            }
 
-//     useEffect(() => {
-//         if (isLoggedIn) {
-//             fetchUserDetailsAndFullName();
-//         }
+            const newReview = {
+                Review: reviewContent,
+            };
 
-//         fetchTestimonials();
-//     }, [isLoggedIn]);
+            const response = await fetch('http://localhost:5000/testimonial/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newReview),
+            });
 
-//     const handleContactInfo = async (e) => {
-//         e.preventDefault();
+            if (!response.ok) {
+                console.error('HTTP error! Status:', response.status);
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
 
-//         const formData = new FormData();
-//         formData.append('review', Review);
-//         formData.append('userId', userId);
+            const data = await response.json();
 
-//         try {
-//             const response = await axios.post(`${process.env.REACT_APP_URL}/testimonial/add`, formData);
+            if (data.success) {
+                console.log('Review added successfully:', data.data);
+                return { success: true, message: 'Thanks for your review.' };
+            } else {
+                console.error('Error adding review:', data.message);
+                return { success: false, message: 'Error adding review: ' + data.message };
+            }
+        } catch (error) {
+            console.error('An error occurred while adding review:', error);
+            return { success: false, message: 'Error adding review.' };
+        }
+    };
 
-//             if (response.status === 200) {
-//                 const data = response.data;
-//                 if (data.success) {
-//                     console.log('Data added successfully:', data.data);
-//                     setErrorMessage('Thanks For Your Review.');
-//                     setReview('');
+    const handleNextSlide = () => {
+        setCurrentIndex((prevIndex) =>
+            prevIndex === testimonialData.length - 1 ? 0 : prevIndex + 1
+        );
+    };
 
-//                     // Fetch updated testimonials after adding a new one
-//                     fetchTestimonials();
+    const handlePrevSlide = () => {
+        setCurrentIndex((prevIndex) =>
+            prevIndex === 0 ? testimonialData.length - 1 : prevIndex - 1
+        );
+    };
 
-//                     // Fetch user details only if the user is logged in
-//                     if (isLoggedIn) {
-//                         fetchUserDetailsAndFullName();
-//                     }
+    return (
+        <div className="TestimonialSection" id="TestimonialSection">
+            <div className="TestimonialContainer">
+                <div className="TestimonialTitles">
+                    <b className="TheTestimonial">Testimonials</b>
+                </div>
+                <div id="testimonials" className="testimonial-container">
+                    <div className="testimonial-slide">
+                        <div className="Testimonial-content">
+                            {setReview}
+                        </div>
+                        <p className="testimonial-description">
+                            {setFullName}
+                        </p>
+                    </div>
+                </div>
 
-//                     setTimeout(() => {
-//                         setErrorMessage('');
-//                         setButtonPopup(false);
-//                     }, 5000);
-//                 } else {
-//                     console.error('Error adding Testimonial:', data.message);
-//                     setErrorMessage('Error adding testimonial: ' + data.message);
-//                 }
-//             } else {
-//                 console.error('HTTP error! Status:', response.status);
-//                 console.error('Response:', response);
-//                 throw new Error(`HTTP error! Status: ${response.status}`);
-//             }
-//         } catch (error) {
-//             console.error('An error occurred while adding testimonial:', error);
-//             setErrorMessage('Error adding testimonial.');
-//         }
-//     };
+                {loggedIn && (
+                    <button
+                        id="openBtn"
+                        className="testimonial-button"
+                        onClick={() => setButtonPopup(true)}
+                    >
+                        Leave a Review !!
+                    </button>
+                )}
 
-//     const [currentIndex, setCurrentIndex] = useState(0);
+                <p className='transition-footer'>You can also contact me and visit my social media</p>
 
-//     const handleNextSlide = () => {
-//         setCurrentIndex((prevIndex) =>
-//             prevIndex === testimonialsData.length - 1 ? 0 : prevIndex + 1
-//         );
-//     };
+                <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
+                    <div>
+                        <h2 className="leave-review">Leave a Review</h2>
+                        <form id="reviewForm" className="testimonial-form" onSubmit={handleReview} encType='multipart/form-data'>
+                            <div className='title-form' >Your Opinion:</div>
+                            <br />
+                            <textarea className='input-form-review' id="review" required
+                                placeholder='Enter Your Review'
+                                value={Review}
+                                onChange={(e) => setReview(e.target.value)}
+                            ></textarea>
+                            <br />
+                            {errorMessage && <p style={{ color: 'white' }}>{errorMessage}</p>}
+                            <button type="submit" className="send-button">
+                                Send
+                            </button>
+                        </form>
+                    </div>
+                </Popup>
+            </div>
+        </div>
+    );
+}
 
-//     const handlePrevSlide = () => {
-//         setCurrentIndex((prevIndex) =>
-//             prevIndex === 0 ? testimonialsData.length - 1 : prevIndex - 1
-//         );
-//     };
-
-//     return (
-//         <div className="TestimonialSection" id="TestimonialSection">
-//             <div className="TestimonialContainer">
-//                 <div className="TestimonialTitles">
-//                     <b className="TheTestimonial">Testimonials</b>
-//                 </div>
-//                 <div id="testimonials" className="testimonial-container">
-//                     {testimonialsData.length > 0 ? (
-//                         <>
-//                             <button id="left-btn" onClick={handlePrevSlide}>
-//                                 <i className="arrow left-arrow"></i>
-//                             </button>
-//                             {testimonialsData.map((testimonial, index) => (
-//                                 <div key={index} className={`testimonial-slide ${index === currentIndex ? 'active' : ''}`}>
-//                                     <p className="testimonial-description">
-//                                         {testimonial?.review}
-//                                     </p>
-//                                     <p className="testimonial-author">
-//                                         By: {testimonial?.userId ? userId.fullName : 'Unknown User'}
-//                                     </p>
-//                                 </div>
-//                             ))}
-//                             <button id="right-btn" onClick={handleNextSlide}>
-//                                 <i className="arrow right-arrow"></i>
-//                             </button>
-//                         </>
-//                     ) : (
-//                         <p>No testimonials available.</p>
-//                     )}
-//                 </div>
-
-//                 {isLoggedIn && (
-//                     <button
-//                         id="openBtn"
-//                         className="testimonial-button"
-//                         onClick={() => setButtonPopup(true)}
-//                     >
-//                         Leave a Review !!
-//                     </button>
-//                 )}
-
-//                 <PopUp trigger={buttonPopup} setTrigger={setButtonPopup}>
-//                     <div>
-//                         <h2 className="leave-review">Leave a Review</h2>
-//                         <form id="reviewForm" className="testimonial-form" onSubmit={handleContactInfo} encType='multipart/form-data'>
-//                             <div className='title-form'>Your Opinion:</div>
-//                             <br />
-//                             <textarea className='input-form-review' id="review" required
-//                                 placeholder='Enter Your Review'
-//                                 value={Review}
-//                                 onChange={(e) => setReview(e.target.value)}
-//                             ></textarea>
-//                             <br />
-//                             {errorMessage && <p style={{ color: 'white' }}>{errorMessage}</p>}
-//                             <button type="submit" className="send-button">
-//                                 Send
-//                             </button>
-//                         </form>
-//                     </div>
-//                 </PopUp>
-//             </div>
-//         </div>
-//     );
-// }
-
-// export default Testimonials;
-
-// // import React, { useState, useEffect } from 'react';
-// // import axios from 'axios';
-// // import "../CSS/Testimonial.css";
-
-// // const Testimonials = ({ loggedIn }) => {
-// //     const [testimonials, setTestimonials] = useState([]);
-// //     const [showModal, setShowModal] = useState(false);
-// //     const [review, setReview] = useState('');
-
-// //     const fetchTestimonials = async () => {
-// //         try {
-// //             const response = await axios.get('${process.env.REACT_APP_URL}/testimonial/getAll');
-// //             setTestimonials(response.data);
-// //         } catch (error) {
-// //             console.error('Error fetching testimonials:', error);
-// //         }
-// //     };
-
-// //     const handleShowModal = () => {
-// //         setShowModal(true);
-// //     };
-
-// //     const handleCloseModal = () => {
-// //         setShowModal(false);
-// //     };
-
-// //     const handleReviewChange = (e) => {
-// //         setReview(e.target.value);
-// //     };
-
-// //     const handleAddTestimonial = async () => {
-// //         try {
-// //             const response = await axios.post(
-// //                 '${process.env.REACT_APP_URL}/testimonial/add',
-// //                 { review },
-// //                 { headers: { 'Content-Type': 'application/json' } }
-// //             );
-
-// //             if (response.data.success) {
-// //                 handleCloseModal();
-// //                 fetchTestimonials();
-// //             } else {
-// //                 console.error('Testimonial submission failed:', response.data.message);
-// //             }
-// //         } catch (error) {
-// //             console.error('Error adding testimonial:', error);
-// //         }
-// //     };
-
-// //     useEffect(() => {
-// //         fetchTestimonials();
-// //     }, []);
-
-// //     return (
-// //         <div>
-// //             <div className="testimonial-carousel">
-// //                 {Array.isArray(testimonials) && testimonials.length > 0 ? (
-// //                     testimonials.map((testimonial) => (
-// //                         testimonial.approve && (
-// //                             <div key={testimonial._id} className="testimonial-item">
-// //                                 <p>{testimonial.review}</p>
-// //                                 <p>User: {testimonial.userId.fullName}</p>
-// //                             </div>
-// //                         )
-// //                     ))
-// //                 ) : (
-// //                     <p>No testimonials available.</p>
-// //                 )}
-// //             </div>
-
-// //             {loggedIn && (
-// //                 <button className="add-testimonial-button" onClick={handleShowModal}>
-// //                     Add Testimonial
-// //                 </button>
-// //             )}
-
-// //             {showModal && (
-// //                 <div className="modal">
-// //                     <div className="modal-content">
-// //                         <span className="close" onClick={handleCloseModal}>
-// //                             &times;
-// //                         </span>
-// //                         <textarea
-// //                             rows={3}
-// //                             placeholder="Write your review here"
-// //                             onChange={handleReviewChange}
-// //                         />
-// //                         <button onClick={handleAddTestimonial}>Submit Review</button>
-// //                     </div>
-// //                 </div>
-// //             )}
-// //         </div>
-// //     );
-// // };
-
-// // export default Testimonials;
+export default Testimonials;
