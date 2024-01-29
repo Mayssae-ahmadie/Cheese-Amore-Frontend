@@ -73,6 +73,11 @@ function NavBar() {
                         </Link>
                     </div>
                     <div>
+                        <Link to="/GrazingRequest" className="navbar-links">
+                            Grazing Request
+                        </Link>
+                    </div>
+                    <div>
                         <Link to="/About" className="navbar-links">
                             About
                         </Link>
@@ -110,6 +115,11 @@ function NavBar() {
                         <div>
                             <Link to="/Shop" className="mobile-nav-link">
                                 Shop
+                            </Link>
+                        </div>
+                        <div>
+                            <Link to="/GrazingRequest" className="mobile-nav-link">
+                                Grazing Request
                             </Link>
                         </div>
                         <div>

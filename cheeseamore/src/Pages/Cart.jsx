@@ -14,6 +14,7 @@ import ConfirmCheckout from "../Components/Cart Components/ConfirmCheckout";
 
 function Cart() {
     const [shippingMethod, setShippingMethod] = useState("delivery");
+    const [receiveDateTime, setSelectedreceiveDateTime] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isAddressModalOpen, setAddressModalOpen] = useState(false);
     const [showThankyou, setShowThankyou] = useState(false);
@@ -21,6 +22,7 @@ function Cart() {
     const cartId = localStorage.getItem('cartId');
     const modalRef = useRef(null);
     const [cartData, setCartData] = useState(null);
+    const [totalPrice, setTotalPrice] = useState(0);
 
     const openAddressModal = () => {
         setAddressModalOpen(true);
@@ -35,6 +37,8 @@ function Cart() {
         try {
             const response = await axios.post(`${process.env.REACT_APP_URL}/order/create/${cartId}`, {
                 shippingMethod: shippingMethod,
+                receiveDateTime: receiveDateTime,
+                totalPrice: totalPrice
             },
                 {
                     headers: {

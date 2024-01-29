@@ -46,6 +46,10 @@
         margin-left: 40%;
         gap: 40%;
     }
+
+    .navbar {
+        gap: 6%;
+    }
 }
 
 /*Phone*/
@@ -76,7 +80,7 @@
         display: flex;
         flex-direction: column;
         z-index: 1;
-        width: 25%;
+        width: 35%;
         align-items: center;
         padding: 5px;
         border: none;

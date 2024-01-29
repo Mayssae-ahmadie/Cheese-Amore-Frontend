@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from "react";
 import "../../CSS/Cart.css";
 import axios from "axios";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import {
+    addDays,
+    isAfter,
+    isBefore,
+    setHours,
+    format,
+} from 'date-fns';
+import { useToasts } from 'react-toast-notifications';
 
 function CartDetails({ openModal, openAddressModal, CartTable }) {
+    const userId = localStorage.getItem('userId');
     const [shippingCost, setShippingCost] = useState(10);
     const [shippingMethod, setShippingMethod] = useState("delivery");
     const subtotal = localStorage.getItem("total");
     const [total, setTotal] = useState(0);
     const [cartData, setCartData] = useState("");
+    const [receiveDateTime, setReceiveDateTime] = useState(null);
+    const { addToast } = useToasts();
 
     const getCartItems = () => {
         const userId = localStorage.getItem("userId");
@@ -18,7 +31,6 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
             .catch(error => {
                 console.error("Error fetching cart data:", error);
             });
-        console.log(cartData);
     }
 
     getCartItems();
@@ -43,10 +55,48 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
         }
     }, [subtotal, total, shippingMethod, shippingCost]);
 
-
     const handleShippingMethodChange = (event) => {
         const method = event.target.value;
         setShippingMethod(method);
+    };
+
+
+    const handleDateTime = async (selectedDateTime) => {
+        if (!userId) {
+            console.error('You must be logged in to schedule your delivery or pickup slot');
+            return;
+        }
+
+        try {
+            if (!isWithinTimeRange(selectedDateTime)) {
+                console.error('Delivery and Pickup are only available from 10 am to 10 pm');
+                return;
+            }
+
+            const transformedDateString = formatDateTime(selectedDateTime);
+            console.log(transformedDateString, userId);
+            console.log('Delivery or pickup slot was scheduled successfully');
+            setReceiveDateTime(selectedDateTime);
+        } catch (error) {
+            console.error('Error handling delivery or pickup date and time:', error.message);
+        }
+    };
+
+    const minDate = new Date('2024-01-29');
+    const maxDate = addDays(new Date('2024-06-29'), 180); // 180 days from today
+
+    const isWithinTimeRange = (date) => {
+        const startHour = 10;
+        const endHour = 22;
+
+        return (
+            isAfter(date, setHours(date, startHour)) &&
+            isBefore(date, setHours(date, endHour))
+        );
+    };
+
+    const formatDateTime = (date) => {
+        return format(date, 'yyyy-MM-dd HH:mm');
     };
 
     return (
@@ -85,8 +135,21 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
                                 Pickup - free
                             </label>
                         </div>
-                    </div>
 
+                        <div>
+                            <p className="text-3xl italic mb-9 mt-12 CartDetails-Title">Schedule date and time </p>
+                            <DatePicker
+                                selected={receiveDateTime}
+                                onChange={(date) => handleDateTime(date)}
+                                dateFormat="MM/dd/yyyy h:mm aa"
+                                minDate={minDate}
+                                maxDate={maxDate}
+                                showTimeSelect
+                                timeIntervals={60}
+                                timeFormat="HH:mm aa"
+                            />
+                        </div>
+                    </div>
                     <div className="flex gap-60 CartDetails-receipt">
                         <div>
                             <p className="text-xl mb-4 italic">Subtotal</p>
@@ -100,7 +163,7 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
                         </div>
                     </div>
                 </div>
-            </form>
+            </form >
             <div className="flex justify-end">
                 <button
                     onClick={() => openModal(shippingMethod)}
@@ -113,7 +176,7 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
                     <p className="font-normal italic whitespace-pre"> (cash on delivery)</p>
                 </button>
             </div>
-        </div>
+        </div >
     );
 }
 

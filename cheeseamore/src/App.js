@@ -3,6 +3,7 @@ import { ToastProvider } from 'react-toast-notifications';
 import HomePage from './Pages/HomePage';
 import AboutPage from './Pages/AboutPage';
 import ContactPage from './Pages/ContactPage';
+import RequestPage from './Pages/RequestPage';
 import ShopPage from './Pages/ShopPage';
 import Cart from './Pages/Cart';
 import SignUp from './Pages/SignUp';
@@ -21,6 +22,7 @@ function App() {
             <Route path="/LogIn" element={<LogIn />} />
             <Route path="/About" element={<AboutPage />} />
             <Route path="/Contact" element={<ContactPage />} />
+            <Route path="/GrazingRequest" element={<RequestPage />} />
             <Route path="/Shop" element={<ShopPage />} />
             <Route path="/SingleProductPage/:productId" element={<SingleProductPage />} />
             <Route path="/Cart" element={<Cart />} />

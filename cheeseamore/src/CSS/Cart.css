@@ -2,6 +2,14 @@
     background-color: #f5f5f5;
 }
 
+.react-datepicker__input-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
 @media screen and (max-width: 500px) {
     .CartDetails-Title {
         margin-left: 0;

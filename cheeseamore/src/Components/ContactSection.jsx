@@ -1,7 +1,7 @@
 import React from 'react';
 import '../CSS/ContactSection.css';
-import Grazing22 from "../Assets/Grazing22.png";
-import Grazing23 from "../Assets/Grazing23.png";
+import Love from "../Assets/The Love Board.png";
+import Classic from "../Assets/The Classic Board.png";
 import Location from "../Assets/Location icon.png";
 import Instagram from "../Assets/Instagram icon.png";
 import Mail from "../Assets/Mail icon.png";
@@ -12,9 +12,9 @@ const ContactSection = () => {
             <div className='contact-grazing-grid'>
                 <div>
                     <p className='contact-grazing-title'>Let's Brie Friends </p>
-                    <img className="contact-grazing-image" src={Grazing22} alt="" srcSet="" />
+                    <img className="contact-grazing-image" src={Love} alt="" srcSet="" />
                 </div>
-                <div><img className="contact-grazing-image1" src={Grazing23} alt="" srcSet="" />
+                <div><img className="contact-grazing-image1" src={Classic} alt="" srcSet="" />
                     <div className="contact-social">
                         <div className="contact-social-icons">
                             <img className='contact-location-icon' src={Location} alt="Location" />
