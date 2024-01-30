@@ -39,7 +39,7 @@ function Cart() {
         const userId = localStorage.getItem("userId");
         try {
 
-            const orderResponse = await axios.post(`http://localhost:5000/order/create/${cartId}`, {
+            const orderResponse = await axios.post(`${process.env.REACT_APP_URL}/order/create/${cartId}`, {
                 "shippingMethod": shippingMethod,
                 "receiveDateTime": formattedDateTime,
                 "totalPrice": totalPrice
@@ -49,11 +49,11 @@ function Cart() {
 
             try {
 
-                const userResponse = await axios.get(`http://localhost:8000/getById/${userId}`);
+                const userResponse = await axios.get(`${process.env.REACT_APP_URL}/getById/${userId}`);
                 const userEmail = userResponse.data.email;
 
                 // Send order creation request
-                const orderResponse = await axios.post(`http://localhost:8000/order/create/${cartId}`, {
+                const orderResponse = await axios.post(`${process.env.REACT_APP_URL}/order/create/${cartId}`, {
                     "shippingMethod": shippingMethod,
                     "receiveDateTime": formattedDateTime,
                     "totalPrice": totalPrice
@@ -70,7 +70,7 @@ function Cart() {
                               Total Price: ${totalPrice}`
                 };
 
-                const emailResponse = await axios.post(`http://localhost:8000/email/send`, emailData);
+                const emailResponse = await axios.post(`${process.env.REACT_APP_URL}/email/send`, emailData);
 
                 console.log(emailResponse.data);
 

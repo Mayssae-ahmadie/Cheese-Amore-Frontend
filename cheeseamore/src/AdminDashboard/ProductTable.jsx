@@ -28,7 +28,7 @@ const ProductTable = () => {
 
     const fetchProducts = () => {
         axios
-            .get("https://cheese-amore.onrender.com/product/getAll")
+            .get(`${process.env.REACT_APP_URL}/product/getAll`)
             .then((response) => {
                 console.log(response);
                 setProducts(response.data.data);
@@ -45,7 +45,7 @@ const ProductTable = () => {
     const handleDelete = async (productID) => {
         try {
             await axios.delete(
-                `https://cheese-amore.onrender.com/product/delete/${productID}`,
+                `${process.env.REACT_APP_URL}/product/delete/${productID}`,
                 {
                     headers,
                 }
@@ -75,7 +75,7 @@ const ProductTable = () => {
 
         try {
             const response = await axios.post(
-                `http://localhost:5000/product/add`,
+                `${process.env.REACT_APP_URL}/product/add`,
                 formData,
                 {
                     headers: {
@@ -140,7 +140,7 @@ const ProductTable = () => {
 
         try {
             await axios.put(
-                `http://localhost:5000/product/update/${selectedProduct}`,
+                `${process.env.REACT_APP_URL}/product/update/${selectedProduct}`,
                 formData,
                 {
                     headers: {

@@ -52,7 +52,7 @@ const UserTable = () => {
     const handleSwitchToAdmin = async (switchId) => {
         try {
             const response = await axios.put(
-                `http://localhost:5000/user/switchToAdmin/${switchId}`
+                `${process.env.REACT_APP_URL}/user/switchToAdmin/${switchId}`
             );
 
             if (response.data.success) {

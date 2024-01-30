@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import "../CSS/Testimonial.css";
-import ReviewModal from '../Components/ReviewModal';
+import ReviewModal from './ReviewModal';
 import axios from 'axios';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline'; // Import icons from Heroicons v2
+import Popup from './Popup';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 
 function Testimonials() {
     const [testimonialData, setTestimonialData] = useState([]);
@@ -11,6 +12,7 @@ function Testimonials() {
     const [errorMessage, setErrorMessage] = useState('');
     const [loggedIn, setLoggedIn] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [buttonPopup, setButtonPopup] = useState(false);
 
     useEffect(() => {
         fetchApprovedTestimonials();
@@ -19,7 +21,7 @@ function Testimonials() {
 
     const fetchApprovedTestimonials = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/testimonial/getAll');
+            const response = await axios.get(`${process.env.REACT_APP_URL}/testimonial/getAll`);
             const data = response.data;
             const approvedTestimonials = data.data.filter(testimonial => testimonial.approve === true);
             setTestimonialData(approvedTestimonials);
@@ -30,28 +32,17 @@ function Testimonials() {
 
     const checkLoggedInStatus = () => {
         const userId = localStorage.getItem('userId');
+        console.log("User ID:", userId);
         if (userId) {
             setLoggedIn(true);
-        }
-    };
-
-    const handleReviewSubmit = async (e) => {
-        e.preventDefault();
-        const userId = localStorage.getItem('userId');
-        if (!userId) {
-            console.error('User ID not found in localStorage');
-            return;
-        }
-        const result = await handleReview(Review, userId);
-        if (result.success) {
-            setIsModalOpen(false);
-            fetchApprovedTestimonials();
+            console.log("User is logged in");
         } else {
-            setErrorMessage(result.message);
+            setLoggedIn(false);
+            console.log("User is not logged in");
         }
     };
 
-    const handleReview = async (reviewContent, userId) => {
+    const handleSubmit = async (reviewContent, userId) => {
         try {
             if (!reviewContent.trim()) {
                 return { success: false, message: 'Please enter your review.' };
@@ -60,7 +51,7 @@ function Testimonials() {
                 userId: userId,
                 review: reviewContent,
             };
-            const response = await axios.post('http://localhost:5000/testimonial/add', newReview);
+            const response = await axios.post(`${process.env.REACT_APP_URL}/testimonial/add`, newReview);
             if (response.data.success) {
                 console.log('Review added successfully:', response.data.data);
                 return { success: true, message: 'Thanks for your review.' };
@@ -111,21 +102,20 @@ function Testimonials() {
                     </button>
                 </div>
 
-
                 {loggedIn && (
                     <button
                         id="openBtn"
                         className="testimonial-button"
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => setButtonPopup(true)}
                     >
                         Leave a Review !!
                     </button>
                 )}
 
-                {/* Render ReviewModal component if isModalOpen is true */}
-                {isModalOpen && (
-                    <ReviewModal closeModal={() => setIsModalOpen(false)} submitReview={handleReviewSubmit} />
-                )}
+                {/* Render Popup component with ReviewModal inside if buttonPopup is true */}
+                <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
+                    <ReviewModal closeModal={() => setButtonPopup(false)} submitReview={handleSubmit} />
+                </Popup>
             </div>
         </div>
     );

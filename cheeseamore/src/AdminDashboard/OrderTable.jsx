@@ -34,7 +34,7 @@ const OrderTable = () => {
 
     const fetchOrders = async () => {
         axios
-            .get("https://cheese-amore.onrender.com/order/getAll")
+            .get(`${process.env.REACT_APP_URL}/order/getAll`)
             .then((response) => {
                 setOrders(response.data.data);
             })
@@ -45,7 +45,7 @@ const OrderTable = () => {
 
     const fetchProducts = async () => {
         axios
-            .get("https://cheese-amore.onrender.com/product/getAll")
+            .get(`${process.env.REACT_APP_URL}/product/getAll`)
             .then((response) => {
                 setProducts(response.data.data);
             })
@@ -69,7 +69,7 @@ const OrderTable = () => {
 
         try {
             await axios.put(
-                `https://cheese-amore.onrender.com/order/update/${selectedOrder}`,
+                `${process.env.REACT_APP_URL}/order/update/${selectedOrder}`,
                 { quantity, totalPrice, shippingMethod, orderStatus },
                 { headers }
             );
@@ -92,7 +92,7 @@ const OrderTable = () => {
     const handleDeleteOrder = async (orderID) => {
         try {
             await axios.delete(
-                `https://cheese-amore.onrender.com/order/delete/${orderID}`,
+                `${process.env.REACT_APP_URL}/order/delete/${orderID}`,
                 {
                     headers,
                 }

@@ -1,13 +1,19 @@
 import React, { useState } from "react";
+import axios from 'axios';
 
 function ReviewModal({ closeModal, submitReview }) {
     const [reviewContent, setReviewContent] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleSubmit = async (e) => {
+        // Prevent the default form submission behavior
         e.preventDefault();
 
-        const result = await submitReview(reviewContent);
+        // Get the user ID from localStorage
+        const userId = localStorage.getItem('userId');
+
+        // Call the submitReview function with reviewContent and userId
+        const result = await submitReview(reviewContent, userId);
 
         if (result.success) {
             closeModal(); // Close the modal after successful submission
@@ -25,7 +31,6 @@ function ReviewModal({ closeModal, submitReview }) {
                     <h2 className="text-xl font-bold text-center p-4 border-b">Leave a Review</h2>
                     <form className="p-4" onSubmit={handleSubmit}>
                         <div className="mb-4">
-                            <label htmlFor="review" className="block mb-1">Your Opinion:</label>
                             <textarea
                                 className="w-full border rounded-lg p-2"
                                 id="review"
@@ -37,7 +42,7 @@ function ReviewModal({ closeModal, submitReview }) {
                         </div>
                         {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
                         <div className="flex justify-end p-4 bg-gray-100">
-                            <button className="bg-white text-red-700 font-bold py-1 px-2 w-32 text-lg inline-block  mr-4" onClick={closeModal}>
+                            <button className="bg-white text-black font-bold py-1 px-2 w-32 text-lg inline-block  mr-4" onClick={closeModal}>
                                 CANCEL
                             </button>
                             <button type="submit" className="bg-[#E6C068] text-black font-bold py-1 px-2 w-32 text-lg inline-block ">

@@ -1,5 +1,4 @@
 import React from 'react';
-import "../CSS/Testimonial.css";
 
 
 function Popup(props) {
