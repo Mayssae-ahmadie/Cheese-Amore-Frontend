@@ -45,11 +45,12 @@
 
     .header-text {
         width: 80%;
-        font-size: x-large;
+        font-size: larger;
         margin-left: 10%;
     }
 
     .header-button {
+        font-size: larger;
         width: 55%;
         margin-left: 20%;
     }

@@ -36,26 +36,57 @@ function Cart() {
         const formattedDateTime = localStorage.getItem("date");
         const totalPrice = localStorage.getItem("Totals");
         console.log(shippingMethod, formattedDateTime, totalPrice, cartId);
+        const userId = localStorage.getItem("userId");
         try {
-            const response = await axios.post(`${process.env.REACT_APP_URL}/order/create/${cartId}`, {
+
+            const orderResponse = await axios.post(`http://localhost:5000/order/create/${cartId}`, {
                 "shippingMethod": shippingMethod,
                 "receiveDateTime": formattedDateTime,
                 "totalPrice": totalPrice
-            },
-                // {
-                //     headers: {
-                //         Authorization: `Bearer ${token}`,
-                //     },
-                // }
-            );
+            });
 
-            // console.log(response.data.data);
-            // closeModal();
-            // setShowThankyou(true);
-            // updateCartData(response.data.data.updatedCart);
+            console.log(orderResponse.data.data);
+
+            try {
+
+                const userResponse = await axios.get(`http://localhost:8000/getById/${userId}`);
+                const userEmail = userResponse.data.email;
+
+                // Send order creation request
+                const orderResponse = await axios.post(`http://localhost:8000/order/create/${cartId}`, {
+                    "shippingMethod": shippingMethod,
+                    "receiveDateTime": formattedDateTime,
+                    "totalPrice": totalPrice
+                });
+
+                console.log(orderResponse.data.data);
+
+                // Send email request
+                const emailData = {
+                    email: userEmail, // Use the retrieved user email
+                    message: `Thank you for your order! Your order details: 
+                              Shipping Method: ${shippingMethod}
+                              Receive Date and Time: ${formattedDateTime}
+                              Total Price: ${totalPrice}`
+                };
+
+                const emailResponse = await axios.post(`http://localhost:8000/email/send`, emailData);
+
+                console.log(emailResponse.data);
+
+                closeModal();
+                setShowThankyou(true);
+                updateCartData(orderResponse.data.data.updatedCart);
+
+            } catch (error) {
+                console.error("Error creating order or sending email:", error.toString());
+            }
+            closeModal();
+            setShowThankyou(true);
+            updateCartData(orderResponse.data.data.updatedCart);
 
         } catch (error) {
-            console.error("Error creating order:", error.toString());
+            console.error("Error creating order or sending email:", error.toString());
         }
     };
 

@@ -8,7 +8,7 @@ function ConfirmCheckout({ closeModal, confirm }) {
                     Are you sure you want to checkout?
                 </p>
                 <div className="flex justify-end bg-gray-100 p-6 items-center">
-                    <button className="bg-white text-red-700 font-bold py-1 px-2 w-32 text-lg inline-block  mr-4" onClick={closeModal}>
+                    <button className="bg-white text-black font-bold py-1 px-2 w-32 text-lg inline-block  mr-4" onClick={closeModal}>
                         CANCEL
                     </button>
                     <button

@@ -160,7 +160,8 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
                             <DatePicker
                                 selected={receiveDateTime}
                                 onChange={(date) => {
-                                    const dateTime = new Date(date); // Parse the selected date
+                                    const dateTime = new Date(date);
+
                                     const formattedDateTime = dateTime.toLocaleString('en-US', {
                                         month: 'long',
                                         day: 'numeric',
@@ -171,17 +172,20 @@ function CartDetails({ openModal, openAddressModal, CartTable }) {
                                     });
 
                                     console.log(formattedDateTime); // Output the formatted date and time
-                                    localStorage.setItem("date", formattedDateTime)
+                                    localStorage.setItem("date", formattedDateTime);
+
+                                    setReceiveDateTime(dateTime); // Update state to reflect the selected date and time
                                 }}
                                 dateFormat="MM/dd/yyyy h:mm aa"
                                 minDate={minDate}
                                 maxDate={maxDate}
                                 showTimeSelect
                                 timeIntervals={60}
+                                minTime={new Date().setHours(10, 0)}
+                                maxTime={new Date().setHours(20, 0)}
                                 timeFormat="HH:mm aa"
-                                value={setReceiveDateTime}
+                                value={receiveDateTime}
                             />
-
                         </div>
                     </div>
                     <div className="flex gap-60 CartDetails-receipt">

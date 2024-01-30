@@ -50,25 +50,30 @@ const UserTable = () => {
     }, []);
 
     const handleSwitchToAdmin = async (switchId) => {
-        console.log(headers);
         try {
-            await axios.put(
-                `${process.env.REACT_APP_URL}/user/switchToAdmin/${switchId}`,
-                {
-                    headers,
-                }
+            const response = await axios.put(
+                `http://localhost:5000/user/switchToAdmin/${switchId}`
             );
-            fetchUsers();
-            addToast("Switched to admin successfully", {
-                appearance: 'success',
-                autoDismiss: true,
-            })
+
+            if (response.data.success) {
+                fetchUsers();
+                addToast("Switched to admin successfully", {
+                    appearance: 'success',
+                    autoDismiss: true,
+                });
+            } else {
+                addToast("Switching to admin failed", {
+                    appearance: 'error',
+                    autoDismiss: true,
+                });
+            }
         } catch (error) {
+            console.error(error);
             setError(error);
             addToast("Unable to switch to admin", {
                 appearance: 'error',
                 autoDismiss: true,
-            })
+            });
         }
     };
 

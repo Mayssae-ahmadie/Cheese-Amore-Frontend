@@ -37,6 +37,11 @@ const Footer = () => {
                     </Link>
                 </div>
                 <div>
+                    <Link to="/GrazingRequest" className="footer-links">
+                        Grazing Request
+                    </Link>
+                </div>
+                <div>
                     <Link to="/About" className="footer-links">
                         About
                     </Link>

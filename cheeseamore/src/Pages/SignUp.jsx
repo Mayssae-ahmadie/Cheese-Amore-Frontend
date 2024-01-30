@@ -153,7 +153,7 @@ function SignUp() {
             />
             <div className="w-1/2 flex items-center justify-center SignUp-form ">
                 <form className="p-12 py-0 w-full signup-title" onSubmit={handleSubmit}>
-                    <h1 className="text-4xl mb-4 text-center signup-title text-shadow">WELCOME TO CHEESE AMORE</h1>
+                    <h1 className="text-4xl mb-4 mt-20 text-center signup-title text-shadow">WELCOME TO CHEESE AMORE</h1>
                     <h1 className="text-2xl mb-8 italic text-center signup-description text-shadow">
                         Is it Brie you’re looking for?
                     </h1>

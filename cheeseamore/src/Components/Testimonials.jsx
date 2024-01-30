@@ -1,87 +1,72 @@
 import { useEffect, useState } from 'react';
 import "../CSS/Testimonial.css";
-import Popup from '../Components/PopUp';
+import ReviewModal from '../Components/ReviewModal';
+import axios from 'axios';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline'; // Import icons from Heroicons v2
 
 function Testimonials() {
     const [testimonialData, setTestimonialData] = useState([]);
-    const [buttonPopup, setButtonPopup] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [Review, setReview] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [loggedIn, setLoggedIn] = useState(false);
-    const [fullName, setFullName] = useState('');
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [approvedTestimonialIds, setApprovedTestimonialIds] = useState([]);
 
     useEffect(() => {
         fetchApprovedTestimonials();
-        fetchUserFullName();
+        checkLoggedInStatus();
     }, []);
 
-    const fetchApprovedTestimonials = () => {
-        fetch('http://localhost:5000/testimonial/getAll')
-            .then((response) => response.json())
-            .then((data) => {
-                // Filter the data to get approved testimonials
-                const approvedTestimonials = data.data.filter(testimonial => testimonial.approve === true);
-                // Extract IDs of approved testimonials
-                const approvedTestimonialIds = approvedTestimonials.map(testimonial => testimonial._id);
-                // Set the state with approved testimonial data and IDs
-                setTestimonialData(approvedTestimonials);
-                setApprovedTestimonialIds(approvedTestimonialIds); // Assuming you have state for storing IDs
-                console.log(approvedTestimonialIds); // Optional: Log the IDs for verification
-            })
-            .catch((error) => console.log(error));
-    };
-
-    const fetchUserFullName = async (approvedTestimonialIds) => {
+    const fetchApprovedTestimonials = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/testimonial/getByID/${approvedTestimonialIds}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const data = await response.json();
-            console.log(data);
-            setFullName(data.userFullName.firstName, data.userFullName.lastName);
-            console.log(data.userFullName.firstName, data.userFullName.lastName);
+            const response = await axios.get('http://localhost:5000/testimonial/getAll');
+            const data = response.data;
+            const approvedTestimonials = data.data.filter(testimonial => testimonial.approve === true);
+            setTestimonialData(approvedTestimonials);
         } catch (error) {
-            console.error('Error fetching user full name:', error);
+            console.error('Error fetching approved testimonials:', error);
         }
     };
-    console.log(testimonialData);
 
+    const checkLoggedInStatus = () => {
+        const userId = localStorage.getItem('userId');
+        if (userId) {
+            setLoggedIn(true);
+        }
+    };
 
-    const handleReview = async (reviewContent) => {
+    const handleReviewSubmit = async (e) => {
+        e.preventDefault();
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+            console.error('User ID not found in localStorage');
+            return;
+        }
+        const result = await handleReview(Review, userId);
+        if (result.success) {
+            setIsModalOpen(false);
+            fetchApprovedTestimonials();
+        } else {
+            setErrorMessage(result.message);
+        }
+    };
+
+    const handleReview = async (reviewContent, userId) => {
         try {
-            // Check if the review content is empty
             if (!reviewContent.trim()) {
                 return { success: false, message: 'Please enter your review.' };
             }
-
             const newReview = {
-                Review: reviewContent,
+                userId: userId,
+                review: reviewContent,
             };
-
-            const response = await fetch('http://localhost:5000/testimonial/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newReview),
-            });
-
-            if (!response.ok) {
-                console.error('HTTP error! Status:', response.status);
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            if (data.success) {
-                console.log('Review added successfully:', data.data);
+            const response = await axios.post('http://localhost:5000/testimonial/add', newReview);
+            if (response.data.success) {
+                console.log('Review added successfully:', response.data.data);
                 return { success: true, message: 'Thanks for your review.' };
             } else {
-                console.error('Error adding review:', data.message);
-                return { success: false, message: 'Error adding review: ' + data.message };
+                console.error('Error adding review:', response.data.message);
+                return { success: false, message: 'Error adding review: ' + response.data.message };
             }
         } catch (error) {
             console.error('An error occurred while adding review:', error);
@@ -105,50 +90,42 @@ function Testimonials() {
         <div className="TestimonialSection" id="TestimonialSection">
             <div className="TestimonialContainer">
                 <div className="TestimonialTitles">
-                    <b className="TheTestimonial">Testimonials</b>
+                    <h1 className="TheTestimonial">Testimonials</h1>
                 </div>
-                <div id="testimonials" className="testimonial-container">
+                <div className="testimonial-container">
+                    {/* Use ChevronLeftIcon and ChevronRightIcon here */}
+                    <button className="prev" onClick={handlePrevSlide}>
+                        <ChevronLeftIcon className="h-6 w-6" />
+                    </button>
                     <div className="testimonial-slide">
                         <div className="Testimonial-content">
-                            {setReview}
+                            {testimonialData.map((testimonial, index) => (
+                                <div key={index} className={index === currentIndex ? "active" : "inactive"}>
+                                    {testimonial.review}
+                                </div>
+                            ))}
                         </div>
-                        <p className="testimonial-description">
-                            {setFullName}
-                        </p>
                     </div>
+                    <button className="next" onClick={handleNextSlide}>
+                        <ChevronRightIcon className="h-6 w-6" />
+                    </button>
                 </div>
+
 
                 {loggedIn && (
                     <button
                         id="openBtn"
                         className="testimonial-button"
-                        onClick={() => setButtonPopup(true)}
+                        onClick={() => setIsModalOpen(true)}
                     >
                         Leave a Review !!
                     </button>
                 )}
 
-                <p className='transition-footer'>You can also contact me and visit my social media</p>
-
-                <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
-                    <div>
-                        <h2 className="leave-review">Leave a Review</h2>
-                        <form id="reviewForm" className="testimonial-form" onSubmit={handleReview} encType='multipart/form-data'>
-                            <div className='title-form' >Your Opinion:</div>
-                            <br />
-                            <textarea className='input-form-review' id="review" required
-                                placeholder='Enter Your Review'
-                                value={Review}
-                                onChange={(e) => setReview(e.target.value)}
-                            ></textarea>
-                            <br />
-                            {errorMessage && <p style={{ color: 'white' }}>{errorMessage}</p>}
-                            <button type="submit" className="send-button">
-                                Send
-                            </button>
-                        </form>
-                    </div>
-                </Popup>
+                {/* Render ReviewModal component if isModalOpen is true */}
+                {isModalOpen && (
+                    <ReviewModal closeModal={() => setIsModalOpen(false)} submitReview={handleReviewSubmit} />
+                )}
             </div>
         </div>
     );

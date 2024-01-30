@@ -43,8 +43,12 @@
 
 /*Tablet*/
 @media screen and (min-width:768px) and (max-width:1023px) {
+    .about-heading {
+        margin-top: 2%;
+    }
+
     .about-text {
-        font-size: x-large;
+        font-size: larger;
         width: 80%;
         margin-left: 20%;
         padding-top: 0%;
@@ -52,7 +56,8 @@
     }
 
     .about-text1 {
-        font-size: x-large;
+        margin-top: 5%;
+        font-size: larger;
         width: 80%;
         margin-left: 20%;
         padding-bottom: 2%;
@@ -60,6 +65,11 @@
 
     .homepage-about-image {
         margin-left: 10%;
+    }
+
+    .about-button {
+        margin-top: 5%;
+        font-size: larger;
     }
 }
 

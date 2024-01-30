@@ -1,297 +1,71 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-
-.TestimonialTitles {
-    padding-top: 2%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 4%;
-
-}
-
-.testimonials {
+.TheTestimonial {
     text-align: center;
+    padding-top: 5%;
     font-size: xx-large;
-    margin: 100px 0 50px;
 }
 
 .testimonial-container {
-    margin-left: 370px;
-    margin-right: 350px;
+    width: 60%;
+    font-size: larger;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 750px;
-
-}
-
-.testimonial-slide {
-    text-align: center;
-    display: flex;
+    margin: 3% 20%;
+    position: relative;
     overflow: hidden;
 }
 
-.testimonial-description {
-    margin-left: 30px;
-    font-size: large;
-    text-align: left;
-    font-size: 20px;
-    margin-top: 6%;
-    max-width: 1000px;
-    color: black;
+.testimonial-slide {
+    display: flex;
+    transition: transform 0.5s ease;
 }
 
-.testimonial-content {
+.Testimonial-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.Testimonial-content>div {
+    display: none;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+.Testimonial-content>div.active {
     display: block;
-}
-
-.testimonial-image {
-    height: 90px;
-    width: 90px;
-    border-radius: 50%;
-    margin-top: 15%;
-}
-
-.testimonial-author {
-    font-size: large;
-    color: rgb(155, 149, 149)
-}
-
-button {
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 1em;
-    background-color: white;
+    text-align: center;
 }
 
 .arrow {
-    border: solid #007BFF;
-    border-width: 0 4px 4px 0;
-    display: inline-block;
-    padding: 10px;
-    transition: transform 0.3s ease-out;
-    outline: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #ffffff;
+    /* White background */
+    color: #333;
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    font-size: 16px;
 }
 
-.right-arrow {
-    transform: rotate(-45deg);
+.arrow-left {
+    left: 0;
 }
 
-.left-arrow {
-    transform: rotate(135deg);
+.arrow-right {
+    right: 0;
 }
 
 .testimonial-button {
-    cursor: pointer;
-    background: rgb(91, 174, 253);
-    background: linear-gradient(180deg, rgba(91, 174, 253, 1) 0%, rgba(109, 120, 221, 1) 100%);
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    height: 50px;
-    width: 170px;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
+    width: 25%;
+    margin-left: 38%;
     margin-top: 2%;
-}
-
-.leave-review {
-    text-align: center;
-    font-size: xx-large;
-}
-
-.transition-footer {
-    text-align: center;
-    color: #6D78DD;
-    margin-top: 20px;
-    font-size: larger;
-    font-weight: bold;
-}
-
-.popup {
-    position: fixed;
-    top: 0;
-    left: 40%;
-    background: rgb(91, 174, 253);
-    background: linear-gradient(180deg, rgba(91, 174, 253, 1) 0%, rgba(109, 120, 221, 1) 100%);
-    width: 30%;
-    padding: 0px;
+    background-color: #E6C068;
+    font-size: x-large;
+    width: 20%;
+    margin-left: 40%;
     border-radius: 5px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    align-items: center;
-    margin-top: 7%;
-    scale: 0.8;
-
-}
-
-.popup-inner {
-
-    padding-top: 20px;
-}
-
-.leave-review {
-    color: white;
-    margin-bottom: 20px;
-}
-
-.send-button {
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    background-color: transparent;
-    color: #fff;
-    border: 1px solid white;
-    padding: 10px 20px;
-    border-radius: 5px;
-}
-
-.close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    background-color: transparent;
-    color: white;
-}
-
-.title-form {
-    color: white;
-    margin-top: 2%;
-    font-size: 25px;
-    text-align: left;
-    padding-left: 15%;
-}
-
-.input-form {
-    border-radius: 5px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.50);
     border: none;
-    margin-bottom: 20px;
-    margin-top: 8px;
-    width: 70%;
-    height: 35px;
-}
-
-.input-form-image {
-    border-radius: 5px;
-    border: none;
-    margin-bottom: 20px;
-    margin-top: 8px;
-    color: white;
-}
-
-.input-form-review {
-    border-radius: 5px;
-    border: none;
-    margin-bottom: 20px;
-    margin-top: 8px;
-    width: 70%;
-    height: 80px
-}
-
-.TheTestimonial {
-    font-size: 45px;
-    color: black;
-}
-
-.TestimonialSection {
-    height: 100vh;
-}
-
-.TestimonialContainer {
-    padding-top: 10%;
-}
-
-@media screen and (max-width: 1268px) {
-    .testimonial-container {
-        scale: 1;
-        margin-left: 20px;
-        margin-right: 20px;
-    }
-
-
-
-    .testimonial-image {
-        height: 80px;
-        width: 80px;
-    }
-
-    .TestimonialFooter {
-        font-size: 30px;
-        color: #6D78DD
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .testimonial-container {
-        scale: 1;
-        margin-left: 20px;
-        margin-right: 20px;
-    }
-
-    .testimonial-description {
-        max-width: 100%;
-        font-size: 18px;
-    }
-
-    .testimonial-image {
-        height: 80px;
-        width: 80px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .testimonial-container {
-        scale: 1;
-        width: 350px
-    }
-
-    .testimonial-slide {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    .testimonial-description {
-        font-size: 20px;
-        padding: 0 10px;
-        margin-left: 10px;
-        margin-right: 10px;
-        text-align: center;
-    }
-
-    .testimonial-image {
-        height: 80px;
-        width: 80px;
-        margin-top: 10px;
-    }
-
-    .testimonial-author p {
-        font-size: 15px;
-        margin-top: 5px;
-    }
-
-    .arrow {
-        padding: 5px;
-
-    }
-
-    .TestimonialFooter {
-        font-size: 30px;
-        color: white
-    }
-
-    .popup {
-        width: 80%;
-        left: 10%;
-        margin-bottom: 5%;
-        height: 95%;
-
-    }
+    padding-top: 1%;
+    padding-bottom: 1%;
 }

@@ -88,7 +88,50 @@
         display: grid;
         grid-template-columns: 40% 30% 30%;
     }
+
+    .footer-text {
+        font-size: larger;
+    }
+
+    .heart1 {
+        margin-bottom: 22%;
+    }
+
+    .heart2 {
+        margin-top: 15%;
+        margin-right: 0%;
+    }
+
+    .footer-section-2 {
+        margin-top: 28%;
+        margin-left: 7%;
+    }
+
+    .footer-links {
+        text-decoration: none;
+        color: black;
+        line-height: 2;
+        font-size: larger;
+    }
+
+    .footer-social-icons {
+        display: block;
+    }
+
+    .footer-social-text1 {
+        margin-left: 3%;
+        width: 100%;
+    }
+
+    img.instagram-icon {
+        margin-right: 5%;
+    }
+
+    .footer-social-header {
+        margin-top: 30%;
+    }
 }
+
 
 /*Phone*/
 @media (max-width: 766px) {}
