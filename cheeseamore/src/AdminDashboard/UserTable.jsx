@@ -56,22 +56,17 @@ const UserTable = () => {
             );
 
             if (response.data.success) {
-                fetchUsers();
-                addToast("Switched to admin successfully", {
-                    appearance: 'success',
-                    autoDismiss: true,
-                });
-            } else {
-                addToast("Switching to admin failed", {
+                addToast("Unable to switch to admin", {
                     appearance: 'error',
                     autoDismiss: true,
                 });
-            }
-        } catch (error) {
+            };
+        }
+        catch (error) {
+            fetchUsers();
             console.error(error);
-            setError(error);
-            addToast("Unable to switch to admin", {
-                appearance: 'error',
+            addToast("Switched to admin successfully", {
+                appearance: 'success',
                 autoDismiss: true,
             });
         }
@@ -91,7 +86,6 @@ const UserTable = () => {
                 autoDismiss: true,
             })
         } catch (error) {
-            setError(error);
             addToast("Unable to delete user", {
                 appearance: 'error',
                 autoDismiss: true,

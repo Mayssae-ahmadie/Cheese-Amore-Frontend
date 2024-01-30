@@ -11,6 +11,7 @@ const ProductTable = () => {
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
     const [category, setCategory] = useState("");
+    const [ID, setID] = useState("");
     const [serving, setServing] = useState("");
     const [error, setError] = useState(null);
     const role = localStorage.getItem('role');
@@ -71,33 +72,41 @@ const ProductTable = () => {
         formData.append("price", price);
         formData.append("category", category);
         formData.append("serving", serving);
-        console.log(name, description, category, serving, price);
+
         try {
-            await axios.post(
+            const response = await axios.post(
                 `http://localhost:5000/product/add`,
-                name,
-                image,
-                description,
-                price,
-                category,
-                serving,
+                formData,
                 {
-                    headers,
+                    headers: {
+                        ...headers,
+                        "Content-Type": "multipart/form-data",
+                    },
                 }
             );
-            fetchProducts();
-            addToast("Product added successfully", {
-                appearance: 'success',
-                autoDismiss: true,
-            })
+
+            if (response.data.success) {
+                fetchProducts();
+                addToast("Product added successfully", {
+                    appearance: 'success',
+                    autoDismiss: true,
+                });
+            } else {
+                setError(response.data.message);
+                addToast("Unable to add product", {
+                    appearance: 'error',
+                    autoDismiss: true,
+                });
+            }
         } catch (error) {
             setError(error);
             addToast("Unable to add product", {
                 appearance: 'error',
                 autoDismiss: true,
-            })
+            });
         }
     };
+
 
     const UpdateProduct = (e, product) => {
         e.preventDefault();
@@ -109,44 +118,52 @@ const ProductTable = () => {
         setPrice(product.price);
         setServing(product.serving);
         setCategory(product.category);
+        setID(product._id)
         setShowUpdateModal(true);
     };
 
     const handleUpdateProduct = async (e, selectedProduct) => {
         e.preventDefault();
+        console.log(selectedProduct);
 
         const formData = new FormData();
+
+        if (image) {
+            formData.append("image", image);
+        }
+
         formData.append("name", name);
         formData.append("description", description);
-        if (image) formData.append("image", image);
         formData.append("price", price);
         formData.append("category", category);
         formData.append("serving", serving);
-        console.log(...formData);
+
         try {
             await axios.put(
                 `http://localhost:5000/product/update/${selectedProduct}`,
+                formData,
                 {
-                    formData
-                },
-                {
-                    headers,
+                    headers: {
+                        ...headers,
+                        "Content-Type": "multipart/form-data",
+                    },
                 }
             );
 
             fetchProducts();
-            addToast("Product added successfully", {
+            addToast("Product updated successfully", {
                 appearance: 'success',
                 autoDismiss: true,
-            })
+            });
         } catch (error) {
             setError(error);
             addToast("Unable to update product", {
                 appearance: 'error',
                 autoDismiss: true,
-            })
+            });
         }
     };
+
 
     const [sortOrder, setSortOrder] = useState(true); // true for ascending order , false for descending
     const toggleSort = (field) => {
@@ -346,7 +363,7 @@ const ProductTable = () => {
 
                         <button
                             className="button button-primary"
-                            onClick={(e) => handleUpdateProduct(e, selectedProduct)}
+                            onClick={(e) => handleUpdateProduct(e, ID)}
                         >
                             Update Product
                         </button>
