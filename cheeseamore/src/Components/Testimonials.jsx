@@ -81,8 +81,7 @@ function Testimonials() {
         <div className="TestimonialSection" id="TestimonialSection">
             <div className="TestimonialContainer">
                 <div className="TestimonialTitles">
-                    <h1 className="TheTestimonial">Testimonials</h1>
-                </div>
+                    <h1 className="TheTestimonial">Testimonials</h1> </div>
                 <div className="testimonial-container">
                     {/* Use ChevronLeftIcon and ChevronRightIcon here */}
                     <button className="prev" onClick={handlePrevSlide}>
