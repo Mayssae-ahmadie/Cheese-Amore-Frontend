@@ -62,10 +62,37 @@
     background-color: #E6C068;
     font-size: x-large;
     width: 20%;
-    margin-left: 40%;
     border-radius: 5px;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.50);
     border: none;
     padding-top: 1%;
     padding-bottom: 1%;
 }
+
+.testimonial-review {
+    width: 100%
+}
+
+.testimonial-user {
+    margin-top: 1%;
+}
+
+/*Tablet*/
+@media screen and (min-width:768px) and (max-width:1023px) {
+    .testimonial-container {
+        width: 80%;
+        margin: 3% 10%;
+    }
+
+    .testimonial-button {
+        width: 50%;
+        margin-left: 25%;
+        margin-top: 0%;
+        font-size: large;
+        width: 20%;
+        margin-left: 40%;
+    }
+}
+
+/*Phone*/
+@media (max-width: 766px) {}

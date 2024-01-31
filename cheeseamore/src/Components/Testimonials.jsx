@@ -16,6 +16,7 @@ function Testimonials() {
 
     useEffect(() => {
         fetchApprovedTestimonials();
+        fetchUserName();
         checkLoggedInStatus();
     }, []);
 
@@ -24,9 +25,31 @@ function Testimonials() {
             const response = await axios.get(`${process.env.REACT_APP_URL}/testimonial/getAll`);
             const data = response.data;
             const approvedTestimonials = data.data.filter(testimonial => testimonial.approve === true);
-            setTestimonialData(approvedTestimonials);
+            // Map over approved testimonials and fetch userFullName for each testimonial
+            const testimonialsWithNames = await Promise.all(approvedTestimonials.map(async testimonial => {
+                const fullName = await fetchUserName(testimonial.userId);
+                return { ...testimonial, userFullName: fullName };
+            }));
+            setTestimonialData(testimonialsWithNames);
         } catch (error) {
             console.error('Error fetching approved testimonials:', error);
+        }
+    };
+
+    const fetchUserName = async (userId) => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_URL}/user/getById/${userId}`);
+            const userData = response.data.data;
+            if (userData && userData.fullName && userData.fullName.firstName && userData.fullName.lastName) {
+                const { firstName, lastName } = userData.fullName;
+                return `${firstName} ${lastName}`;
+            } else {
+                console.error('User full name is not properly defined in the response:', userData);
+                return 'Unknown User';
+            }
+        } catch (error) {
+            console.error('Error fetching user name:', error);
+            return '';
         }
     };
 
@@ -91,7 +114,8 @@ function Testimonials() {
                         <div className="Testimonial-content">
                             {testimonialData.map((testimonial, index) => (
                                 <div key={index} className={index === currentIndex ? "active" : "inactive"}>
-                                    {testimonial.review}
+                                    <p className='testimonial-review'>{testimonial.review}</p>
+                                    <p className='testimonial-user'>{testimonial.userFullName}</p>
                                 </div>
                             ))}
                         </div>

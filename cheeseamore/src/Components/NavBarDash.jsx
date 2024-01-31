@@ -8,6 +8,7 @@ import LogoutConfirm from '../Components/LogoutConfirmation';
 import UserTable from "../AdminDashboard/UserTable";
 import OrderTable from "../AdminDashboard/OrderTable";
 import ProductTable from "../AdminDashboard/ProductTable";
+import TestimonialTable from "../AdminDashboard/TestimonialTable";
 import "../CSS/NavBar.css";
 import "../CSS/AdminDashboard.css";
 
@@ -66,6 +67,9 @@ const NavBarDash = () => {
                             <li>
                                 <Link to="" onClick={() => setSection('Orders')} className={`hover:border-b-2 focus:border-b-2 ${section === 'Orders' ? 'border-b-2' : ''}`}>Orders</Link>
                             </li>
+                            <li>
+                                <Link to="" onClick={() => setSection('Testimonials')} className={`hover:border-b-2 focus:border-b-2 ${section === 'Testimonials' ? 'border-b-2' : ''}`}>Testimonials</Link>
+                            </li>
                             {/* <li>
                             <Link to="/LogIn" className="">Logout</Link>
                         </li> */}
@@ -87,6 +91,7 @@ const NavBarDash = () => {
             {section === 'Users' && <UserTable />}
             {section === 'Products' && <ProductTable />}
             {section === 'Orders' && <OrderTable />}
+            {section === 'Testimonials' && <TestimonialTable />}
         </>
     );
 };

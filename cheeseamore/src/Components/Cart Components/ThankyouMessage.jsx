@@ -4,7 +4,6 @@ function Thankyou({ closeModal }) {
             <div className="text-center">
                 <p className="text-2xl m-12 w-2/3 mx-auto">
                     Thank you for your order!
-
                     <div><a href="" target='_blank' className='underline'>Follow us </a> on social media. </div>
                 </p>
                 <div className="flex justify-end bg-gray-100 p-6 items-center">
