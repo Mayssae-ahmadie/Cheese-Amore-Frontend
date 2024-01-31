@@ -10,6 +10,8 @@ import SignUp from './Pages/SignUp';
 import LogIn from "./Pages/LogIn";
 import SingleProductPage from "./Pages/SingleProductPage";
 import AdminDashboard from "./Pages/AdminDashboardPage";
+import PrivateRoute from "./Components/PrivateRoute";
+import NoAccess from "./Pages/NoAccess";
 
 function App() {
   return (
@@ -26,7 +28,8 @@ function App() {
             <Route path="/Shop" element={<ShopPage />} />
             <Route path="/SingleProductPage/:productId" element={<SingleProductPage />} />
             <Route path="/Cart" element={<Cart />} />
-            <Route path="/AdminDashboard" element={<AdminDashboard />}></Route>
+            <Route path="/NoAccess" element={<NoAccess />} />
+            <Route path="/AdminDashboard" element={<PrivateRoute element={<AdminDashboard />} allowedRoles={'admin'} fallbackPath="/NoAccess" />} />
           </Routes >
         </Router>
       </ToastProvider>

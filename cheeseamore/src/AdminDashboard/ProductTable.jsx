@@ -17,7 +17,7 @@ const ProductTable = () => {
     const role = localStorage.getItem('role');
     const token = localStorage.getItem('token');
     // const headers = { authorization: `Bearer ${token}` };
-    const headers = { 'Content-Type': 'multipart/form-data' };
+    const headers = { 'Content-Type': 'multipart/form-data', authorization: `Bearer ${token}` };
     const { addToast } = useToasts();
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
@@ -143,10 +143,7 @@ const ProductTable = () => {
                 `${process.env.REACT_APP_URL}/product/update/${selectedProduct}`,
                 formData,
                 {
-                    headers: {
-                        ...headers,
-                        "Content-Type": "multipart/form-data",
-                    },
+                    headers,
                 }
             );
 
@@ -185,7 +182,7 @@ const ProductTable = () => {
         <div className="card-main">
             <h1 className="dashboard-title"> Products Table </h1>
 
-            {error && <p className="error-message">{error.message}</p>}
+            {/* {error && <p className="error-message">{error.message}</p>} */}
 
             <button
                 className="button button-primary"
